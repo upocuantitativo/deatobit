@@ -9,12 +9,12 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.data_fetch import fetch_world_bank
+from src.data_fetch import fetch_external, fetch_world_bank
 from src.utils import DATA_PROC
 
 
 def main() -> None:
-    print("Querying World Bank indicators for 33 European countries...")
+    print("Querying World Bank indicators for 33 study countries...")
     wb = fetch_world_bank(year=2022)
     wb.to_csv(DATA_PROC / "external_country_features.csv")
     print(f"Saved external features: {wb.shape} -> "
@@ -28,7 +28,14 @@ def main() -> None:
     merged.to_csv(DATA_PROC / "country_panel.csv")
     print(f"Saved merged panel: {merged.shape} -> "
           f"{DATA_PROC / 'country_panel.csv'}")
-    print("\nMissing-value count per column:")
+
+    print("\nQuerying World Bank for non-study (external) countries...")
+    ext = fetch_external(year=2022)
+    ext.to_csv(DATA_PROC / "non_study_country_features.csv")
+    print(f"Saved non-study panel: {ext.shape} -> "
+          f"{DATA_PROC / 'non_study_country_features.csv'}")
+
+    print("\nMissing-value count per column (study panel):")
     print(merged.isna().sum().to_string())
 
 

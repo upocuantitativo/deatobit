@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>European Rural Tourism Efficiency — DEA, Tobit & Machine Learning</title>
+<title>European Rural Tourism Efficiency — Explainable Machine Learning</title>
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -17,9 +18,9 @@
       <h1 data-en="European rural tourism efficiency"
           data-es="Eficiencia del turismo rural europeo">European rural tourism efficiency</h1>
       <p class="subtitle"
-         data-en="A reproducible pipeline that combines Data Envelopment Analysis, censored regression and explainable machine learning."
-         data-es="Una canalización reproducible que combina análisis envolvente de datos, regresión censurada y aprendizaje automático explicable.">
-        A reproducible pipeline that combines Data Envelopment Analysis, censored regression and explainable machine learning.
+         data-en="An explainable machine-learning pipeline for rural-tourism efficiency, with country-level interpretation and forward-looking scenario maps."
+         data-es="Una canalización de aprendizaje automático explicable para la eficiencia del turismo rural, con interpretación a nivel país y mapas predictivos para escenarios futuros.">
+        An explainable machine-learning pipeline for rural-tourism efficiency, with country-level interpretation and forward-looking scenario maps.
       </p>
     </div>
     <div class="lang-switch" role="group" aria-label="Language">
@@ -31,48 +32,59 @@
 
 <nav class="toc">
   <div class="wrap">
-    <a href="#abstract"     data-en="Abstract"           data-es="Resumen">Abstract</a>
-    <a href="#data"         data-en="Data"               data-es="Datos">Data</a>
-    <a href="#dea"          data-en="DEA"                data-es="DEA">DEA</a>
-    <a href="#tobit"        data-en="Tobit"              data-es="Tobit">Tobit</a>
-    <a href="#ml"           data-en="Machine learning"   data-es="Aprendizaje automático">Machine learning</a>
-    <a href="#explain"      data-en="Explainability"     data-es="Explicabilidad">Explainability</a>
-    <a href="#repro"        data-en="Reproducibility"    data-es="Reproducibilidad">Reproducibility</a>
+    <a href="#poster"      data-en="Poster"           data-es="Póster">Poster</a>
+    <a href="#data"        data-en="Data"             data-es="Datos">Data</a>
+    <a href="#ml"          data-en="Machine learning" data-es="Aprendizaje automático">ML</a>
+    <a href="#explain"     data-en="Explainability"   data-es="Explicabilidad">Explainability</a>
+    <a href="#comparison"  data-en="Comparison"       data-es="Comparativa">Comparison</a>
+    <a href="#maps"        data-en="Maps & scenarios" data-es="Mapas y escenarios">Maps</a>
+    <a href="#predictor"   data-en="Country predictor" data-es="Predictor de país">Predictor</a>
+    <a href="#repro"       data-en="Reproducibility"  data-es="Reproducibilidad">Repro</a>
   </div>
 </nav>
 
 <main class="wrap content">
 
-<section id="abstract">
-  <h2 data-en="Abstract" data-es="Resumen">Abstract</h2>
-  <p data-en="This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences. We solve four DEA programs (CCR, BCC, super-efficiency and SBM) on three inputs (beds, establishments, employees) and two outputs (travellers, overnight stays). The DEA scores are then regressed on a panel of explanatory variables using a censored Tobit, a bootstrap-truncated regression (Simar &amp; Wilson, 2007) and six machine-learning estimators that we train under leave-one-out cross-validation and explain through permutation and SHAP analysis."
-     data-es="Este proyecto mide la eficiencia técnica del turismo rural en 33 países europeos e identifica los factores estructurales que explican las diferencias entre países. Se resuelven cuatro programas DEA (CCR, BCC, supereficiencia y SBM) sobre tres inputs (plazas, establecimientos y empleados) y dos outputs (viajeros y pernoctaciones). Las puntuaciones DEA se modelizan con un Tobit censurado, una regresión truncada con bootstrap (Simar y Wilson, 2007) y seis algoritmos de aprendizaje automático evaluados mediante validación leave-one-out y explicados a través de importancias por permutación y valores SHAP.">
-    This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences.
+<section id="poster" class="poster-hero">
+  <h2 data-en="Visual abstract" data-es="Resumen visual">Visual abstract</h2>
+  <p data-en="A one-page academic poster summarising the data, methods, key findings and reproducibility footer for the project."
+     data-es="Un póster académico de una página que resume los datos, los métodos, los principales hallazgos y la información de reproducibilidad del proyecto.">
+    A one-page academic poster summarising data, methods and key findings.
   </p>
-  <div class="callouts">
-    <div class="card">
-      <h3 data-en="Sample" data-es="Muestra">Sample</h3>
-      <p data-en="33 European countries, year 2025."
-         data-es="33 países europeos, año 2025.">33 European countries, year 2025.</p>
-    </div>
-    <div class="card">
-      <h3 data-en="Models" data-es="Modelos">Models</h3>
-      <p data-en="4 DEA + 2 censored regressions + 6 ML learners + stacked ensemble."
-         data-es="4 DEA + 2 regresiones censuradas + 6 algoritmos de IA + ensemble apilado.">4 DEA + 2 censored regressions + 6 ML learners + stacked ensemble.</p>
-    </div>
-    <div class="card">
-      <h3 data-en="Code" data-es="Código">Code</h3>
-      <p>Python · scikit-learn · XGBoost · LightGBM · SHAP · scipy · statsmodels.</p>
-    </div>
-  </div>
+  <figure class="poster-figure">
+    <a href="https://www.canva.com/design/DAHIB5uerM4/view" target="_blank" rel="noopener">
+      <img src="figures/poster_academic.png"
+           alt="Academic poster summarising the DEA + Tobit + ML pipeline">
+    </a>
+    <figcaption data-en="Click the poster to open the editable version on Canva."
+                data-es="Haz clic sobre el póster para abrir la versión editable en Canva.">
+      Click the poster to open the editable version on Canva.
+    </figcaption>
+  </figure>
 </section>
 
 <section id="data">
   <h2 data-en="Data" data-es="Datos">Data</h2>
-  <p data-en="The panel combines (i) the original DEA inputs and outputs and the four Tobit regressors used in the seminal study and (ii) eleven structural country indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
-     data-es="El panel combina (i) los inputs y outputs DEA originales y los cuatro regresores del Tobit del estudio seminal y (ii) once indicadores estructurales obtenidos del API del Banco Mundial, la lista de Patrimonio Mundial de la UNESCO y el CIA World Factbook.">
-    The panel combines the original DEA inputs/outputs, the four Tobit regressors and eleven external structural indicators.
+  <p data-en="This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences. Two complementary panels feed the analysis: the original sectoral block (5 Eurostat variables and 4 Tobit regressors) and a structural extension with 23 country-level indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
+     data-es="Este proyecto mide la eficiencia técnica del turismo rural en 33 países europeos e identifica los factores estructurales que explican las diferencias entre países. Dos paneles complementarios alimentan el análisis: el bloque sectorial original (5 variables de Eurostat y 4 regresores Tobit) y una extensión estructural con 23 indicadores a nivel país obtenidos del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.">
+    Two panels: the original Eurostat sectoral block and a 23-indicator structural extension.
   </p>
+
+  <div class="callouts">
+    <div class="card">
+      <h3 data-en="Sample" data-es="Muestra">Sample</h3>
+      <p data-en="33 European countries, year 2025." data-es="33 países europeos, año 2025.">33 European countries, year 2025.</p>
+    </div>
+    <div class="card">
+      <h3 data-en="Estimators" data-es="Estimadores">Estimators</h3>
+      <p data-en="6 ML learners + Ridge-stacked ensemble + scenario projector." data-es="6 algoritmos de IA + ensemble apilado + proyector de escenarios.">6 ML learners + ensemble + scenario projector.</p>
+    </div>
+    <div class="card">
+      <h3 data-en="Code" data-es="Código">Code</h3>
+      <p>Python · scikit-learn · XGBoost · LightGBM · SHAP · Plotly · Chart.js.</p>
+    </div>
+  </div>
+
   <table class="grid">
     <thead><tr>
       <th data-en="Block" data-es="Bloque">Block</th>
@@ -81,188 +93,248 @@
     </tr></thead>
     <tbody>
       <tr>
-        <td data-en="DEA inputs" data-es="Inputs DEA">DEA inputs</td>
+        <td data-en="Sectoral inputs" data-es="Inputs sectoriales">Sectoral inputs</td>
         <td data-en="Beds, establishments, employees" data-es="Plazas, establecimientos, empleados">Beds, establishments, employees</td>
         <td>Eurostat</td>
       </tr>
       <tr>
-        <td data-en="DEA outputs" data-es="Outputs DEA">DEA outputs</td>
+        <td data-en="Sectoral outputs" data-es="Outputs sectoriales">Sectoral outputs</td>
         <td data-en="Travellers, overnight stays" data-es="Viajeros, pernoctaciones">Travellers, overnight stays</td>
         <td>Eurostat</td>
       </tr>
       <tr>
-        <td data-en="Tobit regressors" data-es="Regresores Tobit">Tobit regressors</td>
+        <td data-en="Sectoral regressors" data-es="Regresores sectoriales">Sectoral regressors</td>
         <td data-en="Seasonality, length of stay, protected hectares, tourist pressure"
             data-es="Estacionalidad, duración de la estancia, hectáreas protegidas, presión turística">Seasonality, length of stay, protected hectares, tourist pressure</td>
         <td data-en="Authors' compilation" data-es="Elaboración propia">Authors' compilation</td>
       </tr>
       <tr>
-        <td data-en="Structural extension" data-es="Extensión estructural">Structural extension</td>
-        <td data-en="GDP per capita (USD &amp; PPP), tertiary enrolment, internet usage, urban concentration, forest area, hospital beds, Logistics Performance Index, rural population share, UNESCO sites, international airports"
-            data-es="PIB per cápita (USD y PPA), matrícula terciaria, uso de internet, concentración urbana, superficie forestal, camas hospitalarias, Índice de Desempeño Logístico, % población rural, sitios UNESCO y aeropuertos internacionales">15 structural indicators</td>
-        <td>World Bank · UNESCO · CIA Factbook</td>
+        <td data-en="Macro context" data-es="Contexto macro">Macro context</td>
+        <td data-en="GDP per capita (USD &amp; PPP), GDP growth, services value-added, agriculture value-added"
+            data-es="PIB per cápita (USD y PPA), crecimiento del PIB, valor añadido en servicios y agricultura">GDP, growth and sectoral value-added</td>
+        <td>World Bank</td>
+      </tr>
+      <tr>
+        <td data-en="Human capital &amp; connectivity" data-es="Capital humano y conectividad">Human capital &amp; connectivity</td>
+        <td data-en="Tertiary enrolment, education spending, internet usage, mobile subscriptions"
+            data-es="Matrícula terciaria, gasto en educación, uso de internet, suscripciones móviles">Education and digital connectivity</td>
+        <td>World Bank</td>
+      </tr>
+      <tr>
+        <td data-en="Territory &amp; environment" data-es="Territorio y medio ambiente">Territory &amp; environment</td>
+        <td data-en="Forest area, agricultural land, protected areas, large-city share, CO₂ per capita"
+            data-es="Superficie forestal, tierras agrícolas, áreas protegidas, % grandes ciudades, CO₂ per cápita">Land use and emissions</td>
+        <td>World Bank</td>
+      </tr>
+      <tr>
+        <td data-en="Infrastructure" data-es="Infraestructura">Infrastructure</td>
+        <td data-en="Hospital beds, Logistics Performance Index, air passengers, international airports"
+            data-es="Camas hospitalarias, Índice de Desempeño Logístico, pasajeros aéreos, aeropuertos internacionales">Health, logistics, aviation</td>
+        <td>World Bank · CIA Factbook</td>
+      </tr>
+      <tr>
+        <td data-en="Tourism direct" data-es="Turismo directo">Tourism direct</td>
+        <td data-en="Tourism receipts, arrivals, expenditures, UNESCO World Heritage sites"
+            data-es="Ingresos turísticos, llegadas, gastos, sitios UNESCO">Tourism flows and heritage</td>
+        <td>World Bank · UNESCO</td>
       </tr>
     </tbody>
   </table>
 </section>
 
-<section id="dea">
-  <h2 data-en="DEA results" data-es="Resultados DEA">DEA results</h2>
-  <p data-en="Each country is treated as a Decision Making Unit. CCR is solved under constant returns to scale, BCC under variable returns and the Andersen-Petersen super-efficiency formulation removes the evaluated DMU from the reference set so that fully efficient countries can be ranked. The figure below summarises the super-efficiency ranking."
-     data-es="Cada país se trata como una unidad de decisión. CCR se resuelve bajo rendimientos constantes a escala, BCC bajo rendimientos variables y la supereficiencia de Andersen-Petersen excluye la DMU evaluada del conjunto de referencia para poder ordenar a los países eficientes. La figura siguiente resume el ranking de supereficiencia.">
-    Each country is treated as a DMU; CCR, BCC, super-efficiency and SBM are solved as linear programs.
-  </p>
-  <figure>
-    <img class="bilingual" data-base="figures/01_ranking" alt="Country ranking by DEA super-efficiency">
-    <figcaption data-en="Figure 1. Country ranking by DEA super-efficiency."
-                data-es="Figura 1. Ranking de países por supereficiencia DEA.">Figure 1. Country ranking by DEA super-efficiency.</figcaption>
-  </figure>
-  <div class="figrow">
-    <figure>
-      <img class="bilingual" data-base="figures/02_distribution" alt="CCR distribution">
-      <figcaption data-en="Figure 2. Distribution of CCR scores."
-                  data-es="Figura 2. Distribución de las puntuaciones CCR.">Figure 2. Distribution of CCR scores.</figcaption>
-    </figure>
-    <figure>
-      <img class="bilingual" data-base="figures/03_corr_dea" alt="Correlations among DEA scores">
-      <figcaption data-en="Figure 3. Correlations among DEA models."
-                  data-es="Figura 3. Correlaciones entre modelos DEA.">Figure 3. Correlations among DEA models.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section id="tobit">
-  <h2 data-en="Censored regression of efficiency" data-es="Regresión censurada de la eficiencia">Censored regression of efficiency</h2>
-  <p data-en="A right-censored Type-I Tobit explains CCR scores from four structural regressors. Standard errors are obtained from the outer-product-of-gradients estimator and complemented with a Simar &amp; Wilson (2007) bootstrap-truncated regression for bias correction."
-     data-es="Un Tobit Tipo I censurado por la derecha explica las puntuaciones CCR a partir de cuatro regresores. Los errores estándar se calculan mediante el estimador OPG y se complementan con una regresión truncada con bootstrap de Simar y Wilson (2007) para corrección del sesgo.">
-    A right-censored Type-I Tobit explains CCR scores from four structural regressors.
-  </p>
-  <p class="formula">y<sub>i</sub><sup>*</sup> = x<sub>i</sub>'β + ε<sub>i</sub>,&nbsp;&nbsp;&nbsp; ε<sub>i</sub> ~ 𝒩(0, σ<sup>2</sup>),&nbsp;&nbsp;&nbsp; y<sub>i</sub> = min(y<sub>i</sub><sup>*</sup>, 1)</p>
-  <p data-en="Tobit estimates and bootstrap-corrected coefficients are persisted as CSVs under <code>results/tables/</code>."
-     data-es="Las estimaciones Tobit y los coeficientes corregidos por bootstrap se guardan como CSV en <code>results/tables/</code>.">
-    Tobit estimates and bootstrap-corrected coefficients are persisted as CSVs under <code>results/tables/</code>.
-  </p>
-</section>
-
 <section id="ml">
   <h2 data-en="Machine learning" data-es="Aprendizaje automático">Machine learning</h2>
-  <p data-en="Six learners are trained on the same target (CCR efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the fifteen-variable extension."
-     data-es="Se entrenan seis algoritmos sobre la misma variable objetivo (eficiencia CCR) y se evalúan bajo validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos de variables: el baseline de cuatro variables y la extensión de quince.">
-    Six learners are trained on the CCR target and evaluated under leave-one-out cross-validation.
+  <p data-en="Six learners are trained on the same target (CCR-style efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the extended panel with 23 structural indicators."
+     data-es="Se entrenan seis algoritmos sobre la misma variable objetivo (eficiencia tipo CCR) y se evalúan con validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos: el baseline de cuatro variables y la extensión con 23 indicadores estructurales.">
+    Six learners + Ridge-stacked ensemble · leave-one-out CV.
   </p>
   <ul class="model-list">
-    <li><b>Elastic Net</b> · <span data-en="linear baseline with L1+L2 penalty" data-es="baseline lineal con penalización L1+L2">linear baseline with L1+L2 penalty</span></li>
-    <li><b>Random Forest</b> · <span data-en="bagging of decision trees, robust to noise" data-es="bagging de árboles, robusto al ruido">bagging of decision trees, robust to noise</span></li>
-    <li><b>Gradient Boosting</b> · <span data-en="sequential trees minimising squared loss" data-es="árboles secuenciales minimizando pérdida cuadrática">sequential trees</span></li>
-    <li><b>XGBoost</b> · <span data-en="regularised gradient boosting" data-es="gradient boosting regularizado">regularised gradient boosting</span></li>
-    <li><b>LightGBM</b> · <span data-en="histogram-based gradient boosting" data-es="gradient boosting basado en histogramas">histogram-based boosting</span></li>
-    <li><b>Neural Network</b> · <span data-en="MLP (64-32 hidden units, ReLU)" data-es="MLP (64-32 unidades ocultas, ReLU)">MLP (64-32, ReLU)</span></li>
-    <li><b>Stacked ensemble</b> · <span data-en="Ridge meta-learner over the five base estimators" data-es="meta-aprendiz Ridge sobre los cinco estimadores base">Ridge meta-learner</span></li>
+    <li><b>Elastic Net</b> · <span data-en="linear baseline with L1+L2 penalty" data-es="baseline lineal con penalización L1+L2">linear baseline</span></li>
+    <li><b>Random Forest</b> · <span data-en="bagging of decision trees" data-es="bagging de árboles de decisión">bagging</span></li>
+    <li><b>Gradient Boosting</b> · <span data-en="sequential trees minimising squared loss" data-es="árboles secuenciales con pérdida cuadrática">sequential trees</span></li>
+    <li><b>XGBoost</b> · <span data-en="regularised gradient boosting" data-es="gradient boosting regularizado">regularised boosting</span></li>
+    <li><b>LightGBM</b> · <span data-en="histogram-based gradient boosting" data-es="boosting basado en histogramas">histogram boosting</span></li>
+    <li><b>Multilayer Perceptron</b> · <span data-en="64-32 hidden units, ReLU + Adam" data-es="64-32 unidades ocultas, ReLU y Adam">MLP</span></li>
+    <li><b>Stacked ensemble</b> · <span data-en="Ridge meta-learner over the 5 base estimators" data-es="meta-aprendiz Ridge sobre los 5 estimadores base">Ridge meta-learner</span></li>
   </ul>
   <figure>
     <img class="bilingual" data-base="figures/04_model_comparison" alt="Model comparison">
-    <figcaption data-en="Figure 4. Out-of-sample R² (leave-one-out) for both feature sets."
-                data-es="Figura 4. R² fuera de muestra (leave-one-out) en los dos conjuntos de variables.">Figure 4. Out-of-sample R² for both feature sets.</figcaption>
+    <figcaption data-en="Figure 1. Out-of-sample R² (LOO) for both feature sets."
+                data-es="Figura 1. R² fuera de muestra (LOO) en los dos conjuntos.">Figure 1.</figcaption>
   </figure>
   <figure>
     <img class="bilingual" data-base="figures/05_pred_vs_actual" alt="Predicted vs actual">
-    <figcaption data-en="Figure 5. Predicted vs observed CCR efficiency, XGBoost (LOO)."
-                data-es="Figura 5. Eficiencia predicha vs observada (XGBoost, LOO).">Figure 5. Predicted vs observed efficiency.</figcaption>
+    <figcaption data-en="Figure 2. Predicted vs observed efficiency (XGBoost, LOO)."
+                data-es="Figura 2. Eficiencia predicha vs observada (XGBoost, LOO).">Figure 2.</figcaption>
   </figure>
 </section>
 
 <section id="explain">
   <h2 data-en="Explainability" data-es="Explicabilidad">Explainability</h2>
-  <p data-en="Two complementary global views are produced: permutation importance (model-agnostic, shows how much R² drops when a feature is shuffled) and SHAP values (game-theoretic feature attribution averaged over countries). They are complemented with country-level SHAP charts that decompose the prediction for individual DMUs."
-     data-es="Se producen dos vistas globales complementarias: la importancia por permutación (independiente del modelo, mide cuánto cae el R² al permutar una variable) y los valores SHAP (atribución basada en teoría de juegos promediada entre países). Se complementan con gráficos SHAP a nivel país que descomponen la predicción para DMUs concretas.">
-    Two global views (permutation + SHAP) plus country-level SHAP decompositions.
+  <p data-en="The pipeline never stops at predictions; it explains them through three complementary lenses."
+     data-es="La canalización no se queda en las predicciones; las explica con tres lentes complementarias.">
+    Three complementary explainability lenses.
   </p>
 
   <h3 data-en="Global feature importance" data-es="Importancia global de variables">Global feature importance</h3>
   <div class="figrow">
     <figure>
       <img class="bilingual" data-base="figures/06_shap_global_baseline" alt="SHAP baseline">
-      <figcaption data-en="Figure 6a. SHAP — baseline features." data-es="Figura 6a. SHAP — variables baseline.">Figure 6a.</figcaption>
+      <figcaption data-en="Figure 3a. SHAP — baseline features." data-es="Figura 3a. SHAP — variables baseline.">Figure 3a.</figcaption>
     </figure>
     <figure>
       <img class="bilingual" data-base="figures/06_shap_global_extended" alt="SHAP extended">
-      <figcaption data-en="Figure 6b. SHAP — extended features." data-es="Figura 6b. SHAP — variables ampliadas.">Figure 6b.</figcaption>
+      <figcaption data-en="Figure 3b. SHAP — extended features." data-es="Figura 3b. SHAP — variables ampliadas.">Figure 3b.</figcaption>
     </figure>
   </div>
   <div class="figrow">
     <figure>
       <img class="bilingual" data-base="figures/07_permutation_baseline" alt="Permutation baseline">
-      <figcaption data-en="Figure 7a. Permutation importance — baseline." data-es="Figura 7a. Importancia por permutación — baseline.">Figure 7a.</figcaption>
+      <figcaption data-en="Figure 4a. Permutation importance — baseline." data-es="Figura 4a. Importancia por permutación — baseline.">Figure 4a.</figcaption>
     </figure>
     <figure>
       <img class="bilingual" data-base="figures/07_permutation_extended" alt="Permutation extended">
-      <figcaption data-en="Figure 7b. Permutation importance — extended." data-es="Figura 7b. Importancia por permutación — extendido.">Figure 7b.</figcaption>
+      <figcaption data-en="Figure 4b. Permutation importance — extended." data-es="Figura 4b. Importancia por permutación — extendido.">Figure 4b.</figcaption>
     </figure>
   </div>
 
   <h3 data-en="Partial dependence" data-es="Dependencia parcial">Partial dependence</h3>
   <div class="figrow">
-    <figure>
-      <img class="bilingual" data-base="figures/08_pdp_seasonality_baseline" alt="PDP seasonality">
-      <figcaption data-en="Figure 8a. PDP — seasonality." data-es="Figura 8a. PDP — estacionalidad.">Figure 8a.</figcaption>
-    </figure>
-    <figure>
-      <img class="bilingual" data-base="figures/08_pdp_length_of_stay_baseline" alt="PDP length of stay">
-      <figcaption data-en="Figure 8b. PDP — length of stay." data-es="Figura 8b. PDP — duración de la estancia.">Figure 8b.</figcaption>
-    </figure>
-    <figure>
-      <img class="bilingual" data-base="figures/08_pdp_protected_hectares_baseline" alt="PDP protected hectares">
-      <figcaption data-en="Figure 8c. PDP — protected hectares." data-es="Figura 8c. PDP — hectáreas protegidas.">Figure 8c.</figcaption>
-    </figure>
-    <figure>
-      <img class="bilingual" data-base="figures/08_pdp_tourist_pressure_baseline" alt="PDP tourist pressure">
-      <figcaption data-en="Figure 8d. PDP — tourist pressure." data-es="Figura 8d. PDP — presión turística.">Figure 8d.</figcaption>
-    </figure>
+    <figure><img class="bilingual" data-base="figures/08_pdp_seasonality_baseline"   alt=""><figcaption data-en="Figure 5a. PDP — seasonality."        data-es="Figura 5a. PDP — estacionalidad.">Figure 5a.</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/08_pdp_length_of_stay_baseline" alt=""><figcaption data-en="Figure 5b. PDP — length of stay."     data-es="Figura 5b. PDP — duración de la estancia.">Figure 5b.</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/08_pdp_protected_hectares_baseline" alt=""><figcaption data-en="Figure 5c. PDP — protected hectares." data-es="Figura 5c. PDP — hectáreas protegidas.">Figure 5c.</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/08_pdp_tourist_pressure_baseline"  alt=""><figcaption data-en="Figure 5d. PDP — tourist pressure."   data-es="Figura 5d. PDP — presión turística.">Figure 5d.</figcaption></figure>
   </div>
 
   <h3 data-en="Country-level explanations" data-es="Explicaciones a nivel país">Country-level explanations</h3>
-  <p data-en="Each chart decomposes the model prediction for a single country into per-feature contributions. Positive bars push the predicted efficiency up, negative bars push it down."
-     data-es="Cada gráfico descompone la predicción del modelo para un país concreto en contribuciones por variable. Las barras positivas elevan la eficiencia predicha y las negativas la reducen.">
-    Per-country SHAP decomposition of the XGBoost prediction.
+  <p data-en="Each chart decomposes the model prediction for a single country into per-feature contributions: positive bars push the predicted efficiency up, negative bars push it down."
+     data-es="Cada gráfico descompone la predicción del modelo para un país concreto en contribuciones por variable: las barras positivas elevan la eficiencia y las negativas la reducen.">Per-country SHAP decomposition.</p>
+  <div class="figrow">
+    <figure><img class="bilingual" data-base="figures/09_country_shap_Croatia_baseline" alt=""><figcaption>Croatia</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/09_country_shap_Italy_baseline"   alt=""><figcaption>Italy</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/09_country_shap_Spain_baseline"   alt=""><figcaption>Spain</figcaption></figure>
+    <figure><img class="bilingual" data-base="figures/09_country_shap_NorthMacedonia_baseline" alt=""><figcaption>North Macedonia</figcaption></figure>
+  </div>
+</section>
+
+<section id="comparison">
+  <h2 data-en="Comparative scoreboard" data-es="Cuadro comparativo">Comparative scoreboard</h2>
+  <p data-en="Every estimator is reported in a single table with a comparable performance metric. The best model — selected as the ML estimator with the highest leave-one-out R² on the extended panel — drives the scenario projections that follow."
+     data-es="Cada estimador se reporta en una única tabla con una métrica de desempeño comparable. El mejor modelo —seleccionado como el estimador IA con mayor R² leave-one-out en el panel ampliado— alimenta las proyecciones de escenarios que siguen.">
+    Single comparative table; the best ML estimator drives the scenario projections.
   </p>
+  <div id="comparison-table-host">
+    <p class="muted" data-en="Loading scoreboard…" data-es="Cargando cuadro comparativo…">Loading scoreboard…</p>
+  </div>
+  <figure>
+    <img class="bilingual" data-base="figures/10_comparison" alt="Comparison chart">
+    <figcaption data-en="Figure 6. Out-of-sample R² (LOO) for every ML estimator and feature set."
+                data-es="Figura 6. R² fuera de muestra (LOO) para cada estimador y conjunto de variables.">Figure 6.</figcaption>
+  </figure>
+</section>
+
+<section id="maps">
+  <h2 data-en="Maps and future scenarios" data-es="Mapas y escenarios futuros">Maps and future scenarios</h2>
+  <p data-en="The first map shows the empirical density of CCR efficiency across the 33 European countries. The next three are forward-looking projections produced by the best ML estimator under different perturbations of the four sectoral regressors."
+     data-es="El primer mapa muestra la densidad empírica de la eficiencia CCR entre los 33 países europeos. Los tres siguientes son proyecciones a futuro generadas por el mejor estimador IA bajo distintas perturbaciones de los cuatro regresores sectoriales.">
+    Density map + three counter-factual scenarios.
+  </p>
+
+  <table class="grid">
+    <thead><tr>
+      <th data-en="Scenario" data-es="Escenario">Scenario</th>
+      <th data-en="Length of stay" data-es="Duración de la estancia">Length of stay</th>
+      <th data-en="Seasonality" data-es="Estacionalidad">Seasonality</th>
+      <th data-en="Tourist pressure" data-es="Presión turística">Tourist pressure</th>
+      <th data-en="Protected hectares" data-es="Hectáreas protegidas">Protected hectares</th>
+    </tr></thead>
+    <tbody>
+      <tr><td data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</td><td>−15%</td><td>+25%</td><td>+20%</td><td>−10%</td></tr>
+      <tr><td data-en="Baseline (status quo)" data-es="Línea base (status quo)">Baseline</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr>
+      <tr><td data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</td><td>+20%</td><td>−25%</td><td>−15%</td><td>+10%</td></tr>
+    </tbody>
+  </table>
+  <p class="muted small"
+     data-en="Note. Scenario names describe the perturbation, not a value judgement. In the European study panel, intensive-demand patterns correlate with higher reported CCR (Malta is a strong driver), so the projector's mean prediction rises with concentration."
+     data-es="Nota. Los nombres describen la perturbación, no un juicio de valor. En el panel europeo, los patrones de demanda intensiva correlacionan con mayor CCR observada (Malta es un caso atípico relevante), por lo que la predicción media sube con la concentración.">
+  </p>
+
+  <h3 data-en="Density of observed efficiency" data-es="Densidad de la eficiencia observada">Density of observed efficiency</h3>
+  <figure>
+    <img src="figures/map_density.png" alt="Density map of observed CCR efficiency">
+    <figcaption data-en="Figure 7. Observed CCR efficiency, choropleth on the European study panel."
+                data-es="Figura 7. Eficiencia CCR observada, mapa coroplético del panel europeo.">Figure 7.</figcaption>
+  </figure>
+
+  <h3 data-en="Three-scenario predictive maps" data-es="Mapas predictivos a tres escenarios">Three-scenario predictive maps</h3>
   <div class="figrow">
     <figure>
-      <img class="bilingual" data-base="figures/09_country_shap_Croatia_baseline" alt="Croatia SHAP">
-      <figcaption>Croatia</figcaption>
+      <img src="figures/map_intensive.png" alt="Intensive demand scenario">
+      <figcaption data-en="Figure 8a. Intensive-demand scenario." data-es="Figura 8a. Escenario de demanda intensiva.">Figure 8a.</figcaption>
     </figure>
     <figure>
-      <img class="bilingual" data-base="figures/09_country_shap_Italy_baseline" alt="Italy SHAP">
-      <figcaption>Italy</figcaption>
+      <img src="figures/map_baseline.png" alt="Baseline scenario">
+      <figcaption data-en="Figure 8b. Baseline (status quo)." data-es="Figura 8b. Línea base (status quo).">Figure 8b.</figcaption>
     </figure>
     <figure>
-      <img class="bilingual" data-base="figures/09_country_shap_Spain_baseline" alt="Spain SHAP">
-      <figcaption>Spain</figcaption>
+      <img src="figures/map_distributed.png" alt="Distributed demand scenario">
+      <figcaption data-en="Figure 8c. Distributed-demand scenario." data-es="Figura 8c. Escenario de demanda distribuida.">Figure 8c.</figcaption>
     </figure>
-    <figure>
-      <img class="bilingual" data-base="figures/09_country_shap_NorthMacedonia_baseline" alt="North Macedonia SHAP">
-      <figcaption>North Macedonia</figcaption>
-    </figure>
+  </div>
+  <figure>
+    <img class="bilingual" data-base="figures/11_scenarios" alt="Scenarios">
+    <figcaption data-en="Figure 9. Mean predicted CCR by scenario."
+                data-es="Figura 9. CCR media predicha por escenario.">Figure 9.</figcaption>
+  </figure>
+</section>
+
+<section id="predictor">
+  <h2 data-en="Country predictor (out-of-sample)" data-es="Predictor de país (fuera de muestra)">Country predictor (out-of-sample)</h2>
+  <p data-en="Pick a country that is NOT in the European study panel and a future scenario. The trained ML pipeline produces a predicted rural-tourism efficiency together with a graphical breakdown."
+     data-es="Selecciona un país que NO esté en el panel europeo del estudio y un escenario futuro. La canalización IA entrenada produce una eficiencia predicha junto con un resumen gráfico.">
+    Country dropdown + scenario selector → predicted efficiency + graphic.
+  </p>
+  <div class="predictor">
+    <div class="predictor-controls">
+      <label data-en="Country" data-es="País">Country</label>
+      <select id="ext-country"></select>
+      <label data-en="Scenario" data-es="Escenario">Scenario</label>
+      <select id="ext-scenario">
+        <option value="intensive"   data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</option>
+        <option value="baseline" selected data-en="Baseline (status quo)" data-es="Línea base (status quo)">Baseline</option>
+        <option value="distributed" data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</option>
+      </select>
+    </div>
+    <div class="predictor-summary">
+      <div class="metric-card">
+        <p class="muted" data-en="Predicted CCR efficiency" data-es="Eficiencia CCR predicha">Predicted CCR efficiency</p>
+        <p id="ext-score" class="metric-value">—</p>
+        <p id="ext-rank" class="muted" data-en="" data-es=""></p>
+      </div>
+      <div class="chart-host">
+        <canvas id="ext-chart" height="220"></canvas>
+      </div>
+    </div>
   </div>
 </section>
 
 <section id="repro">
   <h2 data-en="Reproducibility" data-es="Reproducibilidad">Reproducibility</h2>
-  <p data-en="The full pipeline runs from a clean clone in five minutes:"
-     data-es="La canalización completa se ejecuta desde un clon limpio en cinco minutos:">
-    The full pipeline runs from a clean clone in five minutes:
+  <p data-en="The full pipeline runs from a clean clone in under ten minutes:"
+     data-es="La canalización completa se ejecuta desde un clon limpio en menos de diez minutos:">
+    Full pipeline from a clean clone:
   </p>
 <pre><code>pip install -r requirements.txt
 
 python scripts/01_prepare_data.py        # tidy CSVs
-python scripts/02_run_dea.py             # DEA scores
-python scripts/03_run_tobit.py           # Tobit + bootstrap
+python scripts/02_run_dea.py             # frontier scores
+python scripts/03_run_tobit.py           # censored regression
 python scripts/04_fetch_external_data.py # World Bank features
-python scripts/05_run_ml_models.py       # ML + SHAP + ensembles
-python scripts/06_make_figures.py        # bilingual plots</code></pre>
-  <p data-en="All intermediate tables are written to <code>results/tables/</code>, fitted models to <code>results/models/</code> and the figures shown above to <code>results/figures/</code> (English and Spanish versions are generated for every figure)."
-     data-es="Todas las tablas intermedias se guardan en <code>results/tables/</code>, los modelos ajustados en <code>results/models/</code> y las figuras anteriores en <code>results/figures/</code> (cada figura se genera en versión inglesa y española).">
-    All artefacts are written under <code>results/</code>; figures are produced in both English and Spanish.
-  </p>
+python scripts/05_run_ml_models.py       # ML + SHAP
+python scripts/06_make_figures.py        # bilingual plots
+python scripts/07_make_maps.py           # choropleth maps
+python scripts/08_predict_non_study.py   # external-country JSON
+python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
 </section>
 
 <footer>
@@ -272,10 +344,22 @@ python scripts/06_make_figures.py        # bilingual plots</code></pre>
 </footer>
 
 <script>
-(function () {
+(async function () {
   const KEY = 'deatobit-lang';
-  const stored = localStorage.getItem(KEY);
-  let lang = (stored === 'es' || stored === 'en') ? stored : 'en';
+  let lang = (localStorage.getItem(KEY) === 'es') ? 'es' : 'en';
+
+  const T = {
+    en: {
+      block: "Block", model: "Model", metric: "Metric", value: "Value", notes: "Notes",
+      best: "Best estimator", rank_pos: "ranks above ", rank_below: " ranks above ",
+      no_data: "No data available for this country.",
+    },
+    es: {
+      block: "Bloque", model: "Modelo", metric: "Métrica", value: "Valor", notes: "Notas",
+      best: "Mejor estimador", rank_pos: "supera a ", rank_below: " supera a ",
+      no_data: "Sin datos disponibles para este país.",
+    },
+  };
 
   function applyLang(target) {
     lang = target;
@@ -283,19 +367,131 @@ python scripts/06_make_figures.py        # bilingual plots</code></pre>
     localStorage.setItem(KEY, target);
     document.querySelectorAll('[data-en]').forEach(node => {
       const txt = node.getAttribute('data-' + target);
-      if (txt) node.innerHTML = txt;
+      if (txt !== null && txt !== undefined && txt !== '') node.innerHTML = txt;
     });
     document.querySelectorAll('img.bilingual').forEach(img => {
       const base = img.getAttribute('data-base');
       if (base) img.src = base + '_' + target + '.png';
     });
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    const active = document.getElementById('btn-' + target);
-    if (active) active.classList.add('active');
+    document.getElementById('btn-' + target)?.classList.add('active');
+    if (window._renderComparison) window._renderComparison();
+    if (window._renderPredictor)  window._renderPredictor();
   }
 
   document.getElementById('btn-en').addEventListener('click', () => applyLang('en'));
   document.getElementById('btn-es').addEventListener('click', () => applyLang('es'));
+
+  // ---- Comparison table ----
+  let comparison = null;
+  try {
+    comparison = await fetch('data/comparison.json').then(r => r.json());
+  } catch (e) {}
+
+  function renderComparison() {
+    const host = document.getElementById('comparison-table-host');
+    if (!comparison) return;
+    const rows = comparison.rows.map(r => {
+      const v = (typeof r.metric_value === 'number')
+        ? r.metric_value.toFixed(4) : r.metric_value;
+      return `<tr><td>${r.block}</td><td><code>${r.model}</code></td>` +
+             `<td>${r.metric_label}</td><td>${v}</td>` +
+             `<td>${r.metric_secondary || ''}</td></tr>`;
+    }).join('');
+    const t = T[lang];
+    host.innerHTML = `
+      <table class="grid">
+        <thead><tr>
+          <th>${t.block}</th><th>${t.model}</th><th>${t.metric}</th>
+          <th>${t.value}</th><th>${t.notes}</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <p class="callout-best"><b>${t.best}:</b>
+        ${comparison.best.best_block} · <code>${comparison.best.best_model}</code> ·
+        ${comparison.best.best_metric_label} =
+        ${comparison.best.best_metric_value.toFixed(4)}
+      </p>`;
+  }
+  window._renderComparison = renderComparison;
+
+  // ---- Predictor ----
+  let predictor = null;
+  try {
+    predictor = await fetch('data/non_study_predictions.json').then(r => r.json());
+  } catch (e) {}
+
+  let chart = null;
+  function renderPredictor() {
+    if (!predictor) return;
+    const sel = document.getElementById('ext-country');
+    if (sel.children.length === 0) {
+      Object.keys(predictor.countries).sort().forEach(c => {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = c;
+        sel.appendChild(o);
+      });
+    }
+    const country = sel.value;
+    const scenario = document.getElementById('ext-scenario').value;
+    const data = predictor.countries[country];
+    const scoreEl = document.getElementById('ext-score');
+    const rankEl = document.getElementById('ext-rank');
+
+    if (!data) {
+      scoreEl.textContent = '—';
+      rankEl.textContent = T[lang].no_data;
+      return;
+    }
+    const value = data[scenario];
+    scoreEl.textContent = value.toFixed(3);
+    const sortedAll = Object.entries(predictor.countries)
+      .map(([c, v]) => ({ country: c, score: v[scenario] }))
+      .sort((a, b) => b.score - a.score);
+    const idx = sortedAll.findIndex(r => r.country === country);
+    rankEl.textContent = `#${idx + 1} / ${sortedAll.length}`;
+
+    const ctx = document.getElementById('ext-chart').getContext('2d');
+    const labels = ["intensive", "baseline", "distributed"];
+    const labelText = lang === 'es'
+      ? ["Demanda intensiva", "Línea base", "Demanda distribuida"]
+      : ["Intensive demand", "Baseline", "Distributed demand"];
+    const values = labels.map(l => data[l]);
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labelText,
+        datasets: [{
+          label: country,
+          data: values,
+          backgroundColor: ["#2A9D8F", "#264653", "#E76F51"],
+          borderRadius: 6,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: country + ' — ' +
+                  (lang === 'es' ? 'Eficiencia CCR predicha por escenario'
+                                 : 'Predicted CCR efficiency by scenario'),
+            font: { family: 'EB Garamond, serif', size: 16 },
+          },
+        },
+        scales: {
+          y: { beginAtZero: true, max: 1.05, ticks: { stepSize: 0.2 } },
+          x: { grid: { display: false } },
+        },
+      },
+    });
+  }
+  window._renderPredictor = renderPredictor;
+  document.getElementById('ext-country')?.addEventListener('change', renderPredictor);
+  document.getElementById('ext-scenario')?.addEventListener('change', renderPredictor);
+
   applyLang(lang);
 })();
 </script>

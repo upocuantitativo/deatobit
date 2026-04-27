@@ -1,8 +1,8 @@
-# European Rural Tourism Efficiency — DEA, Tobit & Machine Learning
+# European Rural Tourism Efficiency — Explainable Machine Learning
 
-Reproducible pipeline that estimates the technical efficiency of the rural-tourism sector in 33 European countries and explains its determinants through censored regression and explainable machine-learning models.
+Reproducible pipeline that predicts and explains the technical efficiency of the rural-tourism sector in 33 European countries, projects three forward-looking scenarios on a choropleth map, and lets the visitor query the model on countries that lie outside the study panel.
 
-> 🌐 Interactive bilingual report (EN / ES): **https://upocuantitativo.github.io/deatobit/**
+> 🌐 **Live bilingual report (EN / ES):** https://upocuantitativo.github.io/deatobit/
 
 ---
 
@@ -12,23 +12,14 @@ Reproducible pipeline that estimates the technical efficiency of the rural-touri
 
 ## English
 
-### Overview
+### What this repository does
 
-| Block | Method | Software |
-| --- | --- | --- |
-| Frontier estimation | CCR · BCC · Andersen-Petersen super-efficiency · Tone SBM | `scipy.optimize.linprog` |
-| Determinants | Type-I Tobit (right-censored at 1) · Simar-Wilson (2007) bootstrap-truncated regression | custom MLE + bootstrap |
-| Machine learning | Elastic Net · Random Forest · Gradient Boosting · XGBoost · LightGBM · Multilayer Perceptron · Ridge-stacked ensemble | scikit-learn, xgboost, lightgbm |
-| Explainability | Permutation importance · SHAP (TreeExplainer) · partial-dependence plots · per-country SHAP | shap, sklearn.inspection |
-
-### Data
-
-| Block | Variables | Source |
-| --- | --- | --- |
-| DEA inputs | beds, establishments, employees | Eurostat |
-| DEA outputs | travellers, overnight stays | Eurostat |
-| Tobit regressors | seasonality, length of stay, protected hectares, tourist pressure | authors' compilation |
-| Structural extension (15 indicators) | GDP per capita (USD & PPP), tertiary enrolment, internet usage, urban concentration, forest area, hospital beds, Logistics Performance Index, rural-population share, UNESCO sites, international airports | World Bank API · UNESCO · CIA Factbook |
+* Estimates rural-tourism efficiency on the European study panel as the upstream target.
+* Trains six machine-learning estimators plus a Ridge-stacked ensemble on a 23-indicator structural panel built from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook.
+* Explains the predictions with permutation importance, SHAP values, partial-dependence and per-country decomposition charts.
+* Builds a comparative scoreboard that ranks every estimator on a single metric.
+* Projects three counter-factual scenarios (intensive demand, status quo, distributed demand) and renders them on Plotly choropleth maps.
+* Lets the visitor select a country outside the study panel and a scenario in the GitHub Pages report; the chart and predicted score update in the browser.
 
 ### Pipeline
 
@@ -36,68 +27,61 @@ Reproducible pipeline that estimates the technical efficiency of the rural-touri
 pip install -r requirements.txt
 
 python scripts/01_prepare_data.py        # tidy CSVs
-python scripts/02_run_dea.py             # CCR / BCC / SuperEff / SBM
-python scripts/03_run_tobit.py           # Tobit + bootstrap-truncated
-python scripts/04_fetch_external_data.py # World Bank features
-python scripts/05_run_ml_models.py       # ML + permutation + SHAP
-python scripts/06_make_figures.py        # figures in EN and ES
+python scripts/02_run_dea.py             # CCR / BCC / SuperEff / SBM (target variable)
+python scripts/03_run_tobit.py           # censored regression (cross-check)
+python scripts/04_fetch_external_data.py # 23 World Bank indicators + non-study panel
+python scripts/05_run_ml_models.py       # ML + LOO + permutation + SHAP
+python scripts/06_make_figures.py        # bilingual EN / ES figures
+python scripts/07_make_maps.py           # density + 3-scenario choropleth
+python scripts/08_predict_non_study.py   # JSON for the in-page predictor
+python scripts/09_make_comparison.py     # comparative scoreboard
 ```
-
-All artefacts are stored under `results/` (`tables/`, `figures/`, `models/`).
 
 ### Project layout
 
 ```
 deatobit/
 ├── data/
-│   ├── raw/               # original Eurostat panel (xlsx)
-│   └── processed/         # tidy CSVs + extended panel
-├── docs/                  # GitHub Pages site (bilingual EN / ES)
+│   ├── raw/              # original Eurostat panel
+│   └── processed/        # tidy CSVs + extended panel + non-study panel
+├── docs/                 # GitHub Pages site (bilingual EN / ES)
+│   ├── index.html        # report with language toggle and predictor
+│   ├── style.css         # academic stylesheet
+│   ├── data/             # JSON consumed by the predictor and scoreboard
+│   └── figures/          # bilingual PNGs + choropleth HTML
 ├── results/
-│   ├── tables/            # DEA scores, Tobit, ML metrics, SHAP
-│   ├── figures/           # bilingual PNGs (_en / _es)
-│   └── models/            # joblib-pickled fitted models
-├── scripts/               # reproducible pipeline (01 → 06)
+│   ├── tables/           # ML metrics, comparative scoreboard, scenarios
+│   ├── figures/          # generated bilingual figures
+│   └── models/           # joblib-pickled fitted models
+├── scripts/              # reproducible pipeline (01 → 09)
 └── src/
-    ├── dea.py             # LP-based DEA estimators
-    ├── tobit.py           # MLE Tobit + Simar-Wilson bootstrap
-    ├── ml_models.py       # learners + LOO + SHAP
-    ├── data_fetch.py      # World Bank API client
-    └── utils.py           # paths, plotting, loaders
+    ├── ml_models.py      # ML learners + LOO + SHAP
+    ├── data_fetch.py     # World Bank API client (study + non-study)
+    ├── dea.py            # LP-based DEA estimators (target generator)
+    ├── tobit.py          # MLE Tobit + Simar-Wilson bootstrap (cross-check)
+    └── utils.py          # paths, plotting, loaders
 ```
 
-### Models, in one line each
+### Estimators in one line each
 
-* **CCR** — input-oriented LP, constant returns to scale, the "standard" DEA score.
-* **BCC** — adds a convexity constraint, isolates pure technical efficiency from scale efficiency.
-* **Super-efficiency (Andersen-Petersen)** — drops the evaluated DMU from the reference set so efficient countries can be ranked above 1.
-* **SBM (Tone, 2001)** — non-radial measure that penalises input excesses and output shortfalls.
-* **Tobit** — right-censored MLE; standard errors from outer-product-of-gradients.
-* **Bootstrap-truncated (Simar-Wilson, 2007)** — Algorithm 1, 1 000 bootstrap replications, bias-corrected coefficients.
-* **Elastic Net** — linear baseline with combined L1/L2 penalty, hyperparameters chosen by 5-fold CV.
+* **Elastic Net** — linear baseline with combined L1/L2 penalty.
 * **Random Forest, Gradient Boosting, XGBoost, LightGBM** — tree ensembles tuned for small samples.
-* **Multilayer Perceptron** — 64-32 hidden units with ReLU activations and Adam optimiser.
-* **Stacked ensemble** — Ridge meta-learner trained on out-of-fold predictions of the five base estimators.
+* **Multilayer Perceptron** — 64-32 hidden units with ReLU activations.
+* **Stacked ensemble** — Ridge meta-learner over the five base estimators (out-of-fold predictions).
 
-### Explainability
+### Scenarios
 
-The pipeline does not stop at predictions: it explains them.
+| Scenario | Length of stay | Seasonality | Tourist pressure | Protected hectares |
+| --- | --- | --- | --- | --- |
+| Intensive demand | −15 % | +25 % | +20 % | −10 % |
+| Baseline (status quo) | 0 % | 0 % | 0 % | 0 % |
+| Distributed demand | +20 % | −25 % | −15 % | +10 % |
 
-* **Permutation importance** for every model (`results/tables/ml_permutation_importance_*.csv`).
-* **SHAP TreeExplainer** for every tree-based learner (`results/tables/ml_shap_summary_*.csv`).
-* **Partial-dependence plots** for the four baseline regressors.
-* **Country-level SHAP charts** decomposing the prediction for individual countries (Croatia, Italy, Spain, North Macedonia).
+The labels describe the perturbation, not a value judgement. With this study panel, intensive-demand patterns correlate with higher reported CCR scores (Malta is a strong driver), so the projector's mean prediction rises with concentration.
 
-All figures are generated twice — `*_en.png` and `*_es.png` — and the GitHub Pages report swaps them through a language toggle.
+### Country predictor (out-of-sample)
 
-### Citation
-
-If you use this code, please cite this repository:
-
-```
-upocuantitativo (2026). deatobit: DEA, Tobit and machine-learning estimators
-for European rural-tourism efficiency. https://github.com/upocuantitativo/deatobit
-```
+The site ships with pre-computed predictions for 31 countries that lie outside the European study panel — North America, Latin America, Asia, the Middle East, Oceania, Africa and non-EU Europe. The dropdown in `#predictor` swaps the country and scenario; the page renders the predicted score, ranking and a Chart.js bar chart.
 
 ### Licence
 
@@ -107,23 +91,14 @@ MIT — see `LICENSE`.
 
 ## Español
 
-### Visión general
+### Qué hace este repositorio
 
-| Bloque | Método | Software |
-| --- | --- | --- |
-| Estimación de frontera | CCR · BCC · Supereficiencia de Andersen-Petersen · SBM de Tone | `scipy.optimize.linprog` |
-| Determinantes | Tobit Tipo I (censurado por la derecha en 1) · Regresión truncada con bootstrap (Simar-Wilson, 2007) | MLE propio + bootstrap |
-| Aprendizaje automático | Elastic Net · Random Forest · Gradient Boosting · XGBoost · LightGBM · Perceptrón multicapa · Ensemble apilado con Ridge | scikit-learn, xgboost, lightgbm |
-| Explicabilidad | Importancia por permutación · SHAP (TreeExplainer) · gráficos de dependencia parcial · SHAP a nivel país | shap, sklearn.inspection |
-
-### Datos
-
-| Bloque | Variables | Fuente |
-| --- | --- | --- |
-| Inputs DEA | plazas, establecimientos, empleados | Eurostat |
-| Outputs DEA | viajeros, pernoctaciones | Eurostat |
-| Regresores Tobit | estacionalidad, duración de la estancia, hectáreas protegidas, presión turística | Elaboración propia |
-| Extensión estructural (15 indicadores) | PIB per cápita (USD y PPA), matrícula terciaria, uso de internet, concentración urbana, superficie forestal, camas hospitalarias, Índice de Desempeño Logístico, % población rural, sitios UNESCO y aeropuertos internacionales | API del Banco Mundial · UNESCO · CIA Factbook |
+* Estima la eficiencia del turismo rural en el panel europeo como variable objetivo.
+* Entrena seis algoritmos de aprendizaje automático y un ensemble apilado con Ridge sobre un panel estructural de 23 indicadores construido a partir del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.
+* Explica las predicciones con importancia por permutación, valores SHAP, dependencia parcial y descomposición a nivel país.
+* Construye un cuadro comparativo que ordena todos los estimadores con una única métrica.
+* Proyecta tres escenarios contrafactuales (demanda intensiva, status quo, demanda distribuida) sobre mapas coropléticos generados con Plotly.
+* Permite seleccionar un país fuera del panel europeo y un escenario en la web; el gráfico y la puntuación se actualizan en el navegador.
 
 ### Canalización
 
@@ -131,43 +106,36 @@ MIT — see `LICENSE`.
 pip install -r requirements.txt
 
 python scripts/01_prepare_data.py        # CSV limpios
-python scripts/02_run_dea.py             # CCR / BCC / SuperEff / SBM
-python scripts/03_run_tobit.py           # Tobit + bootstrap truncado
-python scripts/04_fetch_external_data.py # Variables del Banco Mundial
-python scripts/05_run_ml_models.py       # IA + permutación + SHAP
-python scripts/06_make_figures.py        # Figuras en EN y ES
+python scripts/02_run_dea.py             # CCR / BCC / SuperEff / SBM (variable objetivo)
+python scripts/03_run_tobit.py           # regresión censurada (control)
+python scripts/04_fetch_external_data.py # 23 indicadores del BM + panel externo
+python scripts/05_run_ml_models.py       # IA + LOO + permutación + SHAP
+python scripts/06_make_figures.py        # figuras bilingües EN / ES
+python scripts/07_make_maps.py           # densidad + 3 mapas de escenario
+python scripts/08_predict_non_study.py   # JSON para el predictor interactivo
+python scripts/09_make_comparison.py     # cuadro comparativo
 ```
 
-Todos los artefactos quedan en `results/` (`tables/`, `figures/`, `models/`).
+### Estimadores
 
-### Modelos, en una frase
+* **Elastic Net** · baseline lineal con penalización L1+L2.
+* **Random Forest, Gradient Boosting, XGBoost, LightGBM** · ensambles de árboles ajustados para muestras pequeñas.
+* **MLP** · 64-32 unidades ocultas con activación ReLU.
+* **Ensemble apilado** · meta-aprendiz Ridge entrenado sobre las predicciones out-of-fold de los cinco estimadores base.
 
-* **CCR** — programa lineal input-orientado, rendimientos constantes a escala, la métrica DEA estándar.
-* **BCC** — añade restricción de convexidad, separa eficiencia técnica pura de la eficiencia de escala.
-* **Supereficiencia (Andersen-Petersen)** — elimina la DMU evaluada del conjunto de referencia, permite valores superiores a 1.
-* **SBM (Tone, 2001)** — medida no radial que penaliza los excesos en inputs y los déficits en outputs.
-* **Tobit** — MLE censurado; errores estándar mediante el estimador OPG.
-* **Bootstrap truncado (Simar-Wilson, 2007)** — Algoritmo 1, 1 000 réplicas bootstrap, coeficientes corregidos por sesgo.
-* **Elastic Net** — baseline lineal con penalización L1+L2, hiperparámetros por validación cruzada de 5 folds.
-* **Random Forest, Gradient Boosting, XGBoost, LightGBM** — ensambles de árboles ajustados para muestras pequeñas.
-* **MLP** — 64-32 unidades ocultas con activación ReLU y optimizador Adam.
-* **Ensemble apilado** — meta-aprendiz Ridge entrenado sobre las predicciones out-of-fold de los cinco estimadores base.
+### Escenarios
 
-### Explicabilidad
+| Escenario | Duración estancia | Estacionalidad | Presión turística | Hectáreas protegidas |
+| --- | --- | --- | --- | --- |
+| Demanda intensiva | −15 % | +25 % | +20 % | −10 % |
+| Línea base (status quo) | 0 % | 0 % | 0 % | 0 % |
+| Demanda distribuida | +20 % | −25 % | −15 % | +10 % |
 
-* **Importancia por permutación** para cada modelo.
-* **SHAP TreeExplainer** para cada algoritmo basado en árboles.
-* **Gráficos de dependencia parcial** para los cuatro regresores.
-* **Gráficos SHAP a nivel país** que descomponen la predicción para Croacia, Italia, España y Macedonia del Norte.
+Los nombres describen la perturbación, no un juicio de valor. En este panel europeo los patrones de demanda intensiva correlacionan con mayor CCR observada (Malta es un caso atípico relevante), por lo que la predicción media sube con la concentración.
 
-Todas las figuras se generan dos veces (`*_en.png` y `*_es.png`); la web de GitHub Pages las intercambia mediante el selector de idioma.
+### Predictor de país (fuera de muestra)
 
-### Cita
-
-```
-upocuantitativo (2026). deatobit: DEA, Tobit y aprendizaje automático
-para la eficiencia del turismo rural europeo. https://github.com/upocuantitativo/deatobit
-```
+La web incluye predicciones pre-calculadas para 31 países fuera del panel europeo — Norteamérica, Latinoamérica, Asia, Oriente Medio, Oceanía, África y la Europa no UE. El selector del bloque `#predictor` cambia el país y el escenario; la página actualiza la puntuación predicha, el ranking y un gráfico de barras Chart.js.
 
 ### Licencia
 

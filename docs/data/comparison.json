@@ -1,0 +1,154 @@
+{
+  "best": {
+    "best_block": "Machine learning (extended)",
+    "best_model": "XGBoost",
+    "best_metric_label": "R^2 LOO",
+    "best_metric_value": 0.3231372112681284
+  },
+  "rows": [
+    {
+      "block": "DEA",
+      "model": "CCR",
+      "metric_label": "Mean efficiency",
+      "metric_value": 0.8357272402921346,
+      "metric_secondary": "7/33 efficient",
+      "metric_value_num": 0.8357272402921346
+    },
+    {
+      "block": "DEA",
+      "model": "BCC",
+      "metric_label": "Mean efficiency",
+      "metric_value": 0.9042091768280154,
+      "metric_secondary": "17/33 efficient",
+      "metric_value_num": 0.9042091768280154
+    },
+    {
+      "block": "DEA",
+      "model": "SuperEff",
+      "metric_label": "Mean efficiency",
+      "metric_value": 0.8906476190531969,
+      "metric_secondary": "0/33 efficient",
+      "metric_value_num": 0.8906476190531969
+    },
+    {
+      "block": "DEA",
+      "model": "SBM",
+      "metric_label": "Mean efficiency",
+      "metric_value": 0.6883983177027426,
+      "metric_secondary": "7/33 efficient",
+      "metric_value_num": 0.6883983177027426
+    },
+    {
+      "block": "Censored regression",
+      "model": "Tobit (right-censored at 1)",
+      "metric_label": "Significant regressors (p<0.05)",
+      "metric_value": 1.0,
+      "metric_secondary": "MLE",
+      "metric_value_num": 1.0
+    },
+    {
+      "block": "Censored regression",
+      "model": "Simar-Wilson bootstrap-truncated",
+      "metric_label": "Coefs with 95% CI excluding 0",
+      "metric_value": 3.0,
+      "metric_secondary": "B = 1000",
+      "metric_value_num": 3.0
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "ElasticNet",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.0526581468034585,
+      "metric_secondary": "RMSE 0.1592",
+      "metric_value_num": 0.0526581468034585
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "RandomForest",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.1054824221635936,
+      "metric_secondary": "RMSE 0.1547",
+      "metric_value_num": 0.1054824221635936
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "GradientBoosting",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.078438894273414,
+      "metric_secondary": "RMSE 0.1571",
+      "metric_value_num": 0.078438894273414
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "XGBoost",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.024757086671747,
+      "metric_secondary": "RMSE 0.1616",
+      "metric_value_num": 0.024757086671747
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "LightGBM",
+      "metric_label": "R^2 LOO",
+      "metric_value": -0.065556713492932,
+      "metric_secondary": "RMSE 0.1689",
+      "metric_value_num": -0.065556713492932
+    },
+    {
+      "block": "Machine learning (baseline)",
+      "model": "NeuralNetwork",
+      "metric_label": "R^2 LOO",
+      "metric_value": -34.59632322600664,
+      "metric_secondary": "RMSE 0.9761",
+      "metric_value_num": -34.59632322600664
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "ElasticNet",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.2524212902738258,
+      "metric_secondary": "RMSE 0.1473",
+      "metric_value_num": 0.2524212902738258
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "RandomForest",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.2348911511755779,
+      "metric_secondary": "RMSE 0.1490",
+      "metric_value_num": 0.2348911511755779
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "GradientBoosting",
+      "metric_label": "R^2 LOO",
+      "metric_value": -0.0066547058649488,
+      "metric_secondary": "RMSE 0.1709",
+      "metric_value_num": -0.0066547058649488
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "XGBoost",
+      "metric_label": "R^2 LOO",
+      "metric_value": 0.3231372112681284,
+      "metric_secondary": "RMSE 0.1402",
+      "metric_value_num": 0.3231372112681284
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "LightGBM",
+      "metric_label": "R^2 LOO",
+      "metric_value": -0.0784023694311661,
+      "metric_secondary": "RMSE 0.1769",
+      "metric_value_num": -0.0784023694311661
+    },
+    {
+      "block": "Machine learning (extended)",
+      "model": "NeuralNetwork",
+      "metric_label": "R^2 LOO",
+      "metric_value": -4.398983831015231,
+      "metric_secondary": "RMSE 0.3959",
+      "metric_value_num": -4.398983831015231
+    }
+  ]
+}

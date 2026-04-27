@@ -40,9 +40,20 @@ BASELINE_FEATURES = ["seasonality", "length_of_stay",
                      "protected_hectares", "tourist_pressure"]
 
 EXTENDED_FEATURES = BASELINE_FEATURES + [
-    "gdp_per_capita_usd", "gdp_per_capita_ppp", "tertiary_enrolment",
-    "internet_users_pct", "urban_pop_large_pct", "forest_area_pct",
-    "hospital_beds_p1k", "logistics_perf_idx", "rural_pop_pct",
+    # Macro context.
+    "gdp_per_capita_usd", "gdp_per_capita_ppp", "gdp_growth_pct",
+    "services_value_added", "agriculture_value_added",
+    # Human capital and connectivity.
+    "tertiary_enrolment", "internet_users_pct", "mobile_subs_p100",
+    # Territory and environment.
+    "forest_area_pct", "agri_land_pct", "protected_area_pct",
+    # Infrastructure.
+    "hospital_beds_p1k", "logistics_perf_idx",
+    # Tourism direct indicators.
+    "tourism_receipts_usd", "tourism_arrivals",
+    # Demographics.
+    "rural_pop_pct", "population_total",
+    # Heritage and connectivity.
     "unesco_sites", "airports_intl",
 ]
 

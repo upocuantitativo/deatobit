@@ -1,0 +1,41 @@
+{
+  "best_model": "XGBoost",
+  "scenarios": {
+    "intensive": {
+      "mean": 0.9046783977248979,
+      "median": 0.9111162903345076,
+      "min": 0.729083467352824,
+      "max": 0.9619840029338355,
+      "perturbation": {
+        "length_of_stay": 0.85,
+        "seasonality": 1.25,
+        "tourist_pressure": 1.2,
+        "protected_hectares": 0.9
+      }
+    },
+    "baseline": {
+      "mean": 0.8407486847669187,
+      "median": 0.8754082200400303,
+      "min": 0.5790388825280415,
+      "max": 0.9759429279586359,
+      "perturbation": {
+        "length_of_stay": 1.0,
+        "seasonality": 1.0,
+        "tourist_pressure": 1.0,
+        "protected_hectares": 1.0
+      }
+    },
+    "distributed": {
+      "mean": 0.7698526690433255,
+      "median": 0.7776238954551598,
+      "min": 0.5818389074295407,
+      "max": 0.9656294200685771,
+      "perturbation": {
+        "length_of_stay": 1.2,
+        "seasonality": 0.75,
+        "tourist_pressure": 0.85,
+        "protected_hectares": 1.1
+      }
+    }
+  }
+}

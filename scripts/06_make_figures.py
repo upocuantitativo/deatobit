@@ -244,6 +244,56 @@ def figure_pdp(model, X: pd.DataFrame, feature: str, lang: str,
     save(fig, f"08_pdp_{feature}_{tag}_{lang}.png")
 
 
+def figure_comparison_bar(comp_df: pd.DataFrame, lang: str) -> None:
+    """Horizontal bar chart of every estimator on a unified scoreboard."""
+    df = comp_df.copy()
+    df["metric_value_num"] = pd.to_numeric(df["metric_value"], errors="coerce")
+    ml = df[df["block"].str.startswith("Machine learning")].copy()
+    ml = ml.sort_values("metric_value_num")
+    label_x = "R² LOO" if lang == "en" else "R² LOO"
+    fig, ax = newfig(figsize=(8, 6))
+    colors = []
+    for _, r in ml.iterrows():
+        if r["block"].endswith("(extended)"):
+            colors.append(COLORS[1])
+        else:
+            colors.append(COLORS[3])
+    bars = ax.barh(ml["model"] + " · " + ml["block"].str.replace(
+                       "Machine learning ", ""),
+                   ml["metric_value_num"], color=colors, edgecolor="white")
+    for bar, v in zip(bars, ml["metric_value_num"]):
+        ax.text(v + 0.005, bar.get_y() + bar.get_height() / 2,
+                f"{v:.3f}", va="center", fontsize=8)
+    ax.axvline(0, color="grey", linewidth=0.6)
+    ax.set_xlabel(label_x)
+    title = ("Comparative scoreboard of ML estimators"
+             if lang == "en"
+             else "Comparativa de los estimadores de aprendizaje automático")
+    ax.set_title(title)
+    save(fig, f"10_comparison_{lang}.png")
+
+
+def figure_scenario_panel(scenario_summary: dict, lang: str) -> None:
+    """Bar chart of mean predicted efficiency per scenario."""
+    tags = ["intensive", "baseline", "distributed"]
+    means = [scenario_summary["scenarios"][t]["mean"] for t in tags]
+    labels = {
+        "en": ["Intensive demand", "Baseline", "Distributed demand"],
+        "es": ["Demanda intensiva", "Línea base", "Demanda distribuida"],
+    }[lang]
+    colors = [COLORS[4], COLORS[6], COLORS[1]]
+    fig, ax = newfig(figsize=(6, 4))
+    ax.bar(labels, means, color=colors, edgecolor="white")
+    for i, v in enumerate(means):
+        ax.text(i, v + 0.005, f"{v:.3f}", ha="center", fontsize=10)
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("Mean predicted CCR" if lang == "en"
+                  else "CCR media predicha")
+    ax.set_title("Three-scenario projection" if lang == "en"
+                 else "Proyección a tres escenarios")
+    save(fig, f"11_scenarios_{lang}.png")
+
+
 def figure_country_shap(model, X: pd.DataFrame, country: str, lang: str,
                         tag: str) -> None:
     estimator = model.named_steps["model"]
@@ -287,6 +337,13 @@ def main() -> None:
     fitted_b = joblib.load(MODELS / "ml_models_baseline.pkl")
     fitted_e = joblib.load(MODELS / "ml_models_extended.pkl")
 
+    comp = pd.read_csv(TABLES / "comparative_analyses.csv")
+    try:
+        with open(TABLES / "scenario_summary.json", encoding="utf-8") as fh:
+            scen = json.load(fh)
+    except FileNotFoundError:
+        scen = None
+
     for lang in ("en", "es"):
         figure_ranking(scores, lang)
         figure_distribution(scores, lang)
@@ -303,6 +360,9 @@ def main() -> None:
             if country in Xb.index:
                 figure_country_shap(fitted_b["XGBoost"], Xb, country,
                                     lang, "baseline")
+        figure_comparison_bar(comp, lang)
+        if scen is not None:
+            figure_scenario_panel(scen, lang)
 
     print("Saved figures (en + es) under", FIGURES)
     # Persist label dictionary so the HTML can reuse it.

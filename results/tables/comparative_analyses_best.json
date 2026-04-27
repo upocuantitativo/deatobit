@@ -1,0 +1,6 @@
+{
+  "best_block": "Machine learning (extended)",
+  "best_model": "XGBoost",
+  "best_metric_label": "R^2 LOO",
+  "best_metric_value": 0.3231372112681284
+}

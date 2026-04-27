@@ -45,15 +45,71 @@ ISO3 = {
 }
 
 INDICATORS = {
-    "gdp_per_capita_usd": "NY.GDP.PCAP.CD",
-    "gdp_per_capita_ppp": "NY.GDP.PCAP.PP.CD",
-    "tertiary_enrolment": "SE.TER.ENRR",
-    "internet_users_pct": "IT.NET.USER.ZS",
-    "urban_pop_large_pct": "EN.URB.MCTY.TL.ZS",
-    "forest_area_pct": "AG.LND.FRST.ZS",
-    "hospital_beds_p1k": "SH.MED.BEDS.ZS",
-    "logistics_perf_idx": "LP.LPI.OVRL.XQ",
-    "rural_pop_pct": "SP.RUR.TOTL.ZS",
+    # Macro context.
+    "gdp_per_capita_usd":      "NY.GDP.PCAP.CD",
+    "gdp_per_capita_ppp":      "NY.GDP.PCAP.PP.CD",
+    "gdp_growth_pct":          "NY.GDP.MKTP.KD.ZG",
+    "services_value_added":    "NV.SRV.TOTL.ZS",
+    "agriculture_value_added": "NV.AGR.TOTL.ZS",
+    # Human capital and connectivity.
+    "tertiary_enrolment":      "SE.TER.ENRR",
+    "education_expenditure":   "SE.XPD.TOTL.GD.ZS",
+    "internet_users_pct":      "IT.NET.USER.ZS",
+    "mobile_subs_p100":        "IT.CEL.SETS.P2",
+    # Territory and environment.
+    "urban_pop_large_pct":     "EN.URB.MCTY.TL.ZS",
+    "forest_area_pct":         "AG.LND.FRST.ZS",
+    "agri_land_pct":           "AG.LND.AGRI.ZS",
+    "protected_area_pct":      "ER.PTD.TOTL.ZS",
+    "co2_per_capita":          "EN.GHG.CO2.PC.CE.AR5",
+    # Infrastructure.
+    "hospital_beds_p1k":       "SH.MED.BEDS.ZS",
+    "logistics_perf_idx":      "LP.LPI.OVRL.XQ",
+    "air_passengers":          "IS.AIR.PSGR",
+    # Tourism direct indicators.
+    "tourism_receipts_usd":    "ST.INT.RCPT.CD",
+    "tourism_arrivals":        "ST.INT.ARVL",
+    "tourism_expenditures":    "ST.INT.XPND.CD",
+    # Demographics.
+    "rural_pop_pct":           "SP.RUR.TOTL.ZS",
+    "population_total":        "SP.POP.TOTL",
+}
+
+# Countries kept for the "what-if" predictor that fall outside the study panel.
+EXTERNAL_ISO3 = {
+    "United Kingdom": "GBR", "Iceland": "ISL", "Ireland_NonStudy": None,
+    "Russia": "RUS", "Ukraine": "UKR", "Belarus": "BLR", "Moldova": "MDA",
+    "Georgia": "GEO", "Armenia": "ARM", "Azerbaijan": "AZE",
+    "United States": "USA", "Canada": "CAN", "Mexico": "MEX",
+    "Brazil": "BRA", "Argentina": "ARG", "Chile": "CHL",
+    "Australia": "AUS", "New Zealand": "NZL",
+    "Japan": "JPN", "South Korea": "KOR", "China": "CHN", "India": "IND",
+    "Thailand": "THA", "Vietnam": "VNM", "Indonesia": "IDN",
+    "Morocco": "MAR", "Egypt": "EGY", "South Africa": "ZAF", "Tunisia": "TUN",
+    "Israel": "ISR", "Saudi Arabia": "SAU", "United Arab Emirates": "ARE",
+}
+EXTERNAL_ISO3 = {k: v for k, v in EXTERNAL_ISO3.items() if v is not None}
+
+# UNESCO and airport counts for the external panel (2024 official lists).
+EXTERNAL_UNESCO = {
+    "United Kingdom": 35, "Iceland": 3, "Russia": 31, "Ukraine": 8,
+    "Belarus": 5, "Moldova": 1, "Georgia": 4, "Armenia": 3, "Azerbaijan": 4,
+    "United States": 26, "Canada": 22, "Mexico": 35, "Brazil": 25,
+    "Argentina": 12, "Chile": 7, "Australia": 20, "New Zealand": 3,
+    "Japan": 26, "South Korea": 16, "China": 59, "India": 43,
+    "Thailand": 8, "Vietnam": 8, "Indonesia": 10, "Morocco": 9, "Egypt": 7,
+    "South Africa": 11, "Tunisia": 8, "Israel": 9, "Saudi Arabia": 8,
+    "United Arab Emirates": 1,
+}
+EXTERNAL_AIRPORTS = {
+    "United Kingdom": 271, "Iceland": 96, "Russia": 593, "Ukraine": 187,
+    "Belarus": 65, "Moldova": 7, "Georgia": 22, "Armenia": 11,
+    "Azerbaijan": 30, "United States": 13513, "Canada": 1467, "Mexico": 1714,
+    "Brazil": 4093, "Argentina": 916, "Chile": 481, "Australia": 418,
+    "New Zealand": 123, "Japan": 175, "South Korea": 111, "China": 507,
+    "India": 311, "Thailand": 101, "Vietnam": 45, "Indonesia": 673,
+    "Morocco": 55, "Egypt": 83, "South Africa": 407, "Tunisia": 29,
+    "Israel": 41, "Saudi Arabia": 214, "United Arab Emirates": 43,
 }
 
 # UNESCO World Heritage sites (cultural + natural + mixed) - 2024 release
@@ -122,4 +178,18 @@ def fetch_world_bank(countries: Iterable[str] | None = None,
     df = pd.DataFrame(rows).set_index("country")
     df["unesco_sites"] = pd.Series(UNESCO_SITES)
     df["airports_intl"] = pd.Series(AIRPORTS_INT)
+    return df
+
+
+def fetch_external(year: int = 2022) -> pd.DataFrame:
+    """Identical schema to ``fetch_world_bank`` but for the non-study panel."""
+    rows = []
+    for c, iso in EXTERNAL_ISO3.items():
+        row = {"country": c}
+        for label, code in INDICATORS.items():
+            row[label] = _fetch_one(iso, code, year=year)
+        rows.append(row)
+    df = pd.DataFrame(rows).set_index("country")
+    df["unesco_sites"] = pd.Series(EXTERNAL_UNESCO)
+    df["airports_intl"] = pd.Series(EXTERNAL_AIRPORTS)
     return df
