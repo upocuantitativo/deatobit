@@ -294,6 +294,35 @@ footer a:hover { text-decoration: underline; }
   font-weight: 700;
 }
 .scen-card p { margin: 0; font-size: 15px; line-height: 1.5; color: #2a2f33; }
+
+.download-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 20px 0 0;
+}
+.download-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  position: relative;
+}
+.download-card:hover { border-color: var(--accent2); transform: translateY(-1px); }
+.dl-tag {
+  position: absolute; top: 12px; right: 14px;
+  font-family: var(--sans); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: #f1ede2;
+  padding: 2px 8px; border-radius: 999px;
+}
+.dl-title { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--accent); }
+.dl-sub { font-family: var(--sans); font-size: 12.5px; color: var(--muted); }
 @media (max-width: 720px) {
   .scenario-legend { grid-template-columns: 1fr; }
 }
