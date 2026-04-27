@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+.ipynb_checkpoints/
+.DS_Store
+.idea/
+.vscode/
+.claude/
+*.log
+results/models/*.pkl
+
+# Loose source artefacts - canonical copies live under data/raw/
+/Resultados_DEA_Tobit.docx
+/Datos_DEA_Tobit.xlsx
+/data/raw/Resultados_DEA_Tobit.docx

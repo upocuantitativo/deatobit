@@ -1,0 +1,17 @@
+model,feature,mean_abs_shap,feature_set
+RandomForest,seasonality,0.05806141965545223,baseline
+RandomForest,tourist_pressure,0.03722466570194481,baseline
+RandomForest,length_of_stay,0.02499172699318035,baseline
+RandomForest,protected_hectares,0.006748543007891054,baseline
+XGBoost,seasonality,0.06605448573827744,baseline
+XGBoost,tourist_pressure,0.05108283460140228,baseline
+XGBoost,length_of_stay,0.03901062160730362,baseline
+XGBoost,protected_hectares,0.01691530831158161,baseline
+LightGBM,seasonality,0.0,baseline
+LightGBM,length_of_stay,0.0,baseline
+LightGBM,protected_hectares,0.0,baseline
+LightGBM,tourist_pressure,0.0,baseline
+GradientBoosting,seasonality,0.06377369610829078,baseline
+GradientBoosting,tourist_pressure,0.0481099825926917,baseline
+GradientBoosting,length_of_stay,0.04702586994754786,baseline
+GradientBoosting,protected_hectares,0.01790068304529201,baseline

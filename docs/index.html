@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>European Rural Tourism Efficiency — DEA, Tobit & Machine Learning</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <div class="branding">
+      <p class="eyebrow" data-en="Quantitative methods · Pablo de Olavide University" data-es="Métodos cuantitativos · Universidad Pablo de Olavide">Quantitative methods · Pablo de Olavide University</p>
+      <h1 data-en="European rural tourism efficiency"
+          data-es="Eficiencia del turismo rural europeo">European rural tourism efficiency</h1>
+      <p class="subtitle"
+         data-en="A reproducible pipeline that combines Data Envelopment Analysis, censored regression and explainable machine learning."
+         data-es="Una canalización reproducible que combina análisis envolvente de datos, regresión censurada y aprendizaje automático explicable.">
+        A reproducible pipeline that combines Data Envelopment Analysis, censored regression and explainable machine learning.
+      </p>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button id="btn-en" class="lang-btn active" type="button">EN</button>
+      <button id="btn-es" class="lang-btn" type="button">ES</button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#abstract"     data-en="Abstract"           data-es="Resumen">Abstract</a>
+    <a href="#data"         data-en="Data"               data-es="Datos">Data</a>
+    <a href="#dea"          data-en="DEA"                data-es="DEA">DEA</a>
+    <a href="#tobit"        data-en="Tobit"              data-es="Tobit">Tobit</a>
+    <a href="#ml"           data-en="Machine learning"   data-es="Aprendizaje automático">Machine learning</a>
+    <a href="#explain"      data-en="Explainability"     data-es="Explicabilidad">Explainability</a>
+    <a href="#repro"        data-en="Reproducibility"    data-es="Reproducibilidad">Reproducibility</a>
+  </div>
+</nav>
+
+<main class="wrap content">
+
+<section id="abstract">
+  <h2 data-en="Abstract" data-es="Resumen">Abstract</h2>
+  <p data-en="This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences. We solve four DEA programs (CCR, BCC, super-efficiency and SBM) on three inputs (beds, establishments, employees) and two outputs (travellers, overnight stays). The DEA scores are then regressed on a panel of explanatory variables using a censored Tobit, a bootstrap-truncated regression (Simar &amp; Wilson, 2007) and six machine-learning estimators that we train under leave-one-out cross-validation and explain through permutation and SHAP analysis."
+     data-es="Este proyecto mide la eficiencia técnica del turismo rural en 33 países europeos e identifica los factores estructurales que explican las diferencias entre países. Se resuelven cuatro programas DEA (CCR, BCC, supereficiencia y SBM) sobre tres inputs (plazas, establecimientos y empleados) y dos outputs (viajeros y pernoctaciones). Las puntuaciones DEA se modelizan con un Tobit censurado, una regresión truncada con bootstrap (Simar y Wilson, 2007) y seis algoritmos de aprendizaje automático evaluados mediante validación leave-one-out y explicados a través de importancias por permutación y valores SHAP.">
+    This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences.
+  </p>
+  <div class="callouts">
+    <div class="card">
+      <h3 data-en="Sample" data-es="Muestra">Sample</h3>
+      <p data-en="33 European countries, year 2025."
+         data-es="33 países europeos, año 2025.">33 European countries, year 2025.</p>
+    </div>
+    <div class="card">
+      <h3 data-en="Models" data-es="Modelos">Models</h3>
+      <p data-en="4 DEA + 2 censored regressions + 6 ML learners + stacked ensemble."
+         data-es="4 DEA + 2 regresiones censuradas + 6 algoritmos de IA + ensemble apilado.">4 DEA + 2 censored regressions + 6 ML learners + stacked ensemble.</p>
+    </div>
+    <div class="card">
+      <h3 data-en="Code" data-es="Código">Code</h3>
+      <p>Python · scikit-learn · XGBoost · LightGBM · SHAP · scipy · statsmodels.</p>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <h2 data-en="Data" data-es="Datos">Data</h2>
+  <p data-en="The panel combines (i) the original DEA inputs and outputs and the four Tobit regressors used in the seminal study and (ii) eleven structural country indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
+     data-es="El panel combina (i) los inputs y outputs DEA originales y los cuatro regresores del Tobit del estudio seminal y (ii) once indicadores estructurales obtenidos del API del Banco Mundial, la lista de Patrimonio Mundial de la UNESCO y el CIA World Factbook.">
+    The panel combines the original DEA inputs/outputs, the four Tobit regressors and eleven external structural indicators.
+  </p>
+  <table class="grid">
+    <thead><tr>
+      <th data-en="Block" data-es="Bloque">Block</th>
+      <th data-en="Variables" data-es="Variables">Variables</th>
+      <th data-en="Source" data-es="Fuente">Source</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td data-en="DEA inputs" data-es="Inputs DEA">DEA inputs</td>
+        <td data-en="Beds, establishments, employees" data-es="Plazas, establecimientos, empleados">Beds, establishments, employees</td>
+        <td>Eurostat</td>
+      </tr>
+      <tr>
+        <td data-en="DEA outputs" data-es="Outputs DEA">DEA outputs</td>
+        <td data-en="Travellers, overnight stays" data-es="Viajeros, pernoctaciones">Travellers, overnight stays</td>
+        <td>Eurostat</td>
+      </tr>
+      <tr>
+        <td data-en="Tobit regressors" data-es="Regresores Tobit">Tobit regressors</td>
+        <td data-en="Seasonality, length of stay, protected hectares, tourist pressure"
+            data-es="Estacionalidad, duración de la estancia, hectáreas protegidas, presión turística">Seasonality, length of stay, protected hectares, tourist pressure</td>
+        <td data-en="Authors' compilation" data-es="Elaboración propia">Authors' compilation</td>
+      </tr>
+      <tr>
+        <td data-en="Structural extension" data-es="Extensión estructural">Structural extension</td>
+        <td data-en="GDP per capita (USD &amp; PPP), tertiary enrolment, internet usage, urban concentration, forest area, hospital beds, Logistics Performance Index, rural population share, UNESCO sites, international airports"
+            data-es="PIB per cápita (USD y PPA), matrícula terciaria, uso de internet, concentración urbana, superficie forestal, camas hospitalarias, Índice de Desempeño Logístico, % población rural, sitios UNESCO y aeropuertos internacionales">15 structural indicators</td>
+        <td>World Bank · UNESCO · CIA Factbook</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="dea">
+  <h2 data-en="DEA results" data-es="Resultados DEA">DEA results</h2>
+  <p data-en="Each country is treated as a Decision Making Unit. CCR is solved under constant returns to scale, BCC under variable returns and the Andersen-Petersen super-efficiency formulation removes the evaluated DMU from the reference set so that fully efficient countries can be ranked. The figure below summarises the super-efficiency ranking."
+     data-es="Cada país se trata como una unidad de decisión. CCR se resuelve bajo rendimientos constantes a escala, BCC bajo rendimientos variables y la supereficiencia de Andersen-Petersen excluye la DMU evaluada del conjunto de referencia para poder ordenar a los países eficientes. La figura siguiente resume el ranking de supereficiencia.">
+    Each country is treated as a DMU; CCR, BCC, super-efficiency and SBM are solved as linear programs.
+  </p>
+  <figure>
+    <img class="bilingual" data-base="figures/01_ranking" alt="Country ranking by DEA super-efficiency">
+    <figcaption data-en="Figure 1. Country ranking by DEA super-efficiency."
+                data-es="Figura 1. Ranking de países por supereficiencia DEA.">Figure 1. Country ranking by DEA super-efficiency.</figcaption>
+  </figure>
+  <div class="figrow">
+    <figure>
+      <img class="bilingual" data-base="figures/02_distribution" alt="CCR distribution">
+      <figcaption data-en="Figure 2. Distribution of CCR scores."
+                  data-es="Figura 2. Distribución de las puntuaciones CCR.">Figure 2. Distribution of CCR scores.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/03_corr_dea" alt="Correlations among DEA scores">
+      <figcaption data-en="Figure 3. Correlations among DEA models."
+                  data-es="Figura 3. Correlaciones entre modelos DEA.">Figure 3. Correlations among DEA models.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="tobit">
+  <h2 data-en="Censored regression of efficiency" data-es="Regresión censurada de la eficiencia">Censored regression of efficiency</h2>
+  <p data-en="A right-censored Type-I Tobit explains CCR scores from four structural regressors. Standard errors are obtained from the outer-product-of-gradients estimator and complemented with a Simar &amp; Wilson (2007) bootstrap-truncated regression for bias correction."
+     data-es="Un Tobit Tipo I censurado por la derecha explica las puntuaciones CCR a partir de cuatro regresores. Los errores estándar se calculan mediante el estimador OPG y se complementan con una regresión truncada con bootstrap de Simar y Wilson (2007) para corrección del sesgo.">
+    A right-censored Type-I Tobit explains CCR scores from four structural regressors.
+  </p>
+  <p class="formula">y<sub>i</sub><sup>*</sup> = x<sub>i</sub>'β + ε<sub>i</sub>,&nbsp;&nbsp;&nbsp; ε<sub>i</sub> ~ 𝒩(0, σ<sup>2</sup>),&nbsp;&nbsp;&nbsp; y<sub>i</sub> = min(y<sub>i</sub><sup>*</sup>, 1)</p>
+  <p data-en="Tobit estimates and bootstrap-corrected coefficients are persisted as CSVs under <code>results/tables/</code>."
+     data-es="Las estimaciones Tobit y los coeficientes corregidos por bootstrap se guardan como CSV en <code>results/tables/</code>.">
+    Tobit estimates and bootstrap-corrected coefficients are persisted as CSVs under <code>results/tables/</code>.
+  </p>
+</section>
+
+<section id="ml">
+  <h2 data-en="Machine learning" data-es="Aprendizaje automático">Machine learning</h2>
+  <p data-en="Six learners are trained on the same target (CCR efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the fifteen-variable extension."
+     data-es="Se entrenan seis algoritmos sobre la misma variable objetivo (eficiencia CCR) y se evalúan bajo validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos de variables: el baseline de cuatro variables y la extensión de quince.">
+    Six learners are trained on the CCR target and evaluated under leave-one-out cross-validation.
+  </p>
+  <ul class="model-list">
+    <li><b>Elastic Net</b> · <span data-en="linear baseline with L1+L2 penalty" data-es="baseline lineal con penalización L1+L2">linear baseline with L1+L2 penalty</span></li>
+    <li><b>Random Forest</b> · <span data-en="bagging of decision trees, robust to noise" data-es="bagging de árboles, robusto al ruido">bagging of decision trees, robust to noise</span></li>
+    <li><b>Gradient Boosting</b> · <span data-en="sequential trees minimising squared loss" data-es="árboles secuenciales minimizando pérdida cuadrática">sequential trees</span></li>
+    <li><b>XGBoost</b> · <span data-en="regularised gradient boosting" data-es="gradient boosting regularizado">regularised gradient boosting</span></li>
+    <li><b>LightGBM</b> · <span data-en="histogram-based gradient boosting" data-es="gradient boosting basado en histogramas">histogram-based boosting</span></li>
+    <li><b>Neural Network</b> · <span data-en="MLP (64-32 hidden units, ReLU)" data-es="MLP (64-32 unidades ocultas, ReLU)">MLP (64-32, ReLU)</span></li>
+    <li><b>Stacked ensemble</b> · <span data-en="Ridge meta-learner over the five base estimators" data-es="meta-aprendiz Ridge sobre los cinco estimadores base">Ridge meta-learner</span></li>
+  </ul>
+  <figure>
+    <img class="bilingual" data-base="figures/04_model_comparison" alt="Model comparison">
+    <figcaption data-en="Figure 4. Out-of-sample R² (leave-one-out) for both feature sets."
+                data-es="Figura 4. R² fuera de muestra (leave-one-out) en los dos conjuntos de variables.">Figure 4. Out-of-sample R² for both feature sets.</figcaption>
+  </figure>
+  <figure>
+    <img class="bilingual" data-base="figures/05_pred_vs_actual" alt="Predicted vs actual">
+    <figcaption data-en="Figure 5. Predicted vs observed CCR efficiency, XGBoost (LOO)."
+                data-es="Figura 5. Eficiencia predicha vs observada (XGBoost, LOO).">Figure 5. Predicted vs observed efficiency.</figcaption>
+  </figure>
+</section>
+
+<section id="explain">
+  <h2 data-en="Explainability" data-es="Explicabilidad">Explainability</h2>
+  <p data-en="Two complementary global views are produced: permutation importance (model-agnostic, shows how much R² drops when a feature is shuffled) and SHAP values (game-theoretic feature attribution averaged over countries). They are complemented with country-level SHAP charts that decompose the prediction for individual DMUs."
+     data-es="Se producen dos vistas globales complementarias: la importancia por permutación (independiente del modelo, mide cuánto cae el R² al permutar una variable) y los valores SHAP (atribución basada en teoría de juegos promediada entre países). Se complementan con gráficos SHAP a nivel país que descomponen la predicción para DMUs concretas.">
+    Two global views (permutation + SHAP) plus country-level SHAP decompositions.
+  </p>
+
+  <h3 data-en="Global feature importance" data-es="Importancia global de variables">Global feature importance</h3>
+  <div class="figrow">
+    <figure>
+      <img class="bilingual" data-base="figures/06_shap_global_baseline" alt="SHAP baseline">
+      <figcaption data-en="Figure 6a. SHAP — baseline features." data-es="Figura 6a. SHAP — variables baseline.">Figure 6a.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/06_shap_global_extended" alt="SHAP extended">
+      <figcaption data-en="Figure 6b. SHAP — extended features." data-es="Figura 6b. SHAP — variables ampliadas.">Figure 6b.</figcaption>
+    </figure>
+  </div>
+  <div class="figrow">
+    <figure>
+      <img class="bilingual" data-base="figures/07_permutation_baseline" alt="Permutation baseline">
+      <figcaption data-en="Figure 7a. Permutation importance — baseline." data-es="Figura 7a. Importancia por permutación — baseline.">Figure 7a.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/07_permutation_extended" alt="Permutation extended">
+      <figcaption data-en="Figure 7b. Permutation importance — extended." data-es="Figura 7b. Importancia por permutación — extendido.">Figure 7b.</figcaption>
+    </figure>
+  </div>
+
+  <h3 data-en="Partial dependence" data-es="Dependencia parcial">Partial dependence</h3>
+  <div class="figrow">
+    <figure>
+      <img class="bilingual" data-base="figures/08_pdp_seasonality_baseline" alt="PDP seasonality">
+      <figcaption data-en="Figure 8a. PDP — seasonality." data-es="Figura 8a. PDP — estacionalidad.">Figure 8a.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/08_pdp_length_of_stay_baseline" alt="PDP length of stay">
+      <figcaption data-en="Figure 8b. PDP — length of stay." data-es="Figura 8b. PDP — duración de la estancia.">Figure 8b.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/08_pdp_protected_hectares_baseline" alt="PDP protected hectares">
+      <figcaption data-en="Figure 8c. PDP — protected hectares." data-es="Figura 8c. PDP — hectáreas protegidas.">Figure 8c.</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/08_pdp_tourist_pressure_baseline" alt="PDP tourist pressure">
+      <figcaption data-en="Figure 8d. PDP — tourist pressure." data-es="Figura 8d. PDP — presión turística.">Figure 8d.</figcaption>
+    </figure>
+  </div>
+
+  <h3 data-en="Country-level explanations" data-es="Explicaciones a nivel país">Country-level explanations</h3>
+  <p data-en="Each chart decomposes the model prediction for a single country into per-feature contributions. Positive bars push the predicted efficiency up, negative bars push it down."
+     data-es="Cada gráfico descompone la predicción del modelo para un país concreto en contribuciones por variable. Las barras positivas elevan la eficiencia predicha y las negativas la reducen.">
+    Per-country SHAP decomposition of the XGBoost prediction.
+  </p>
+  <div class="figrow">
+    <figure>
+      <img class="bilingual" data-base="figures/09_country_shap_Croatia_baseline" alt="Croatia SHAP">
+      <figcaption>Croatia</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/09_country_shap_Italy_baseline" alt="Italy SHAP">
+      <figcaption>Italy</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/09_country_shap_Spain_baseline" alt="Spain SHAP">
+      <figcaption>Spain</figcaption>
+    </figure>
+    <figure>
+      <img class="bilingual" data-base="figures/09_country_shap_NorthMacedonia_baseline" alt="North Macedonia SHAP">
+      <figcaption>North Macedonia</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="repro">
+  <h2 data-en="Reproducibility" data-es="Reproducibilidad">Reproducibility</h2>
+  <p data-en="The full pipeline runs from a clean clone in five minutes:"
+     data-es="La canalización completa se ejecuta desde un clon limpio en cinco minutos:">
+    The full pipeline runs from a clean clone in five minutes:
+  </p>
+<pre><code>pip install -r requirements.txt
+
+python scripts/01_prepare_data.py        # tidy CSVs
+python scripts/02_run_dea.py             # DEA scores
+python scripts/03_run_tobit.py           # Tobit + bootstrap
+python scripts/04_fetch_external_data.py # World Bank features
+python scripts/05_run_ml_models.py       # ML + SHAP + ensembles
+python scripts/06_make_figures.py        # bilingual plots</code></pre>
+  <p data-en="All intermediate tables are written to <code>results/tables/</code>, fitted models to <code>results/models/</code> and the figures shown above to <code>results/figures/</code> (English and Spanish versions are generated for every figure)."
+     data-es="Todas las tablas intermedias se guardan en <code>results/tables/</code>, los modelos ajustados en <code>results/models/</code> y las figuras anteriores en <code>results/figures/</code> (cada figura se genera en versión inglesa y española).">
+    All artefacts are written under <code>results/</code>; figures are produced in both English and Spanish.
+  </p>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 upocuantitativo · MIT License · <a href="https://github.com/upocuantitativo/deatobit">github.com/upocuantitativo/deatobit</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const KEY = 'deatobit-lang';
+  const stored = localStorage.getItem(KEY);
+  let lang = (stored === 'es' || stored === 'en') ? stored : 'en';
+
+  function applyLang(target) {
+    lang = target;
+    document.documentElement.lang = target;
+    localStorage.setItem(KEY, target);
+    document.querySelectorAll('[data-en]').forEach(node => {
+      const txt = node.getAttribute('data-' + target);
+      if (txt) node.innerHTML = txt;
+    });
+    document.querySelectorAll('img.bilingual').forEach(img => {
+      const base = img.getAttribute('data-base');
+      if (base) img.src = base + '_' + target + '.png';
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    const active = document.getElementById('btn-' + target);
+    if (active) active.classList.add('active');
+  }
+
+  document.getElementById('btn-en').addEventListener('click', () => applyLang('en'));
+  document.getElementById('btn-es').addEventListener('click', () => applyLang('es'));
+  applyLang(lang);
+})();
+</script>
+</body>
+</html>
