@@ -30,7 +30,6 @@ from sklearn.inspection import permutation_importance
 from sklearn.linear_model import ElasticNetCV, Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import LeaveOneOut
-from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
@@ -61,10 +60,6 @@ def build_models() -> Dict[str, Pipeline]:
             n_estimators=600, learning_rate=0.05, max_depth=-1,
             num_leaves=15, subsample=0.8, colsample_bytree=0.8,
             random_state=RANDOM_STATE, n_jobs=-1, verbosity=-1)),
-        "NeuralNetwork": _pipeline(MLPRegressor(
-            hidden_layer_sizes=(64, 32), activation="relu", solver="adam",
-            alpha=1e-3, learning_rate_init=1e-3, max_iter=4000,
-            random_state=RANDOM_STATE)),
     }
 
 

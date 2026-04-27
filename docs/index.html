@@ -32,41 +32,53 @@
 
 <nav class="toc">
   <div class="wrap">
-    <a href="#poster"      data-en="Poster"           data-es="Póster">Poster</a>
-    <a href="#data"        data-en="Data"             data-es="Datos">Data</a>
-    <a href="#ml"          data-en="Machine learning" data-es="Aprendizaje automático">ML</a>
-    <a href="#explain"     data-en="Explainability"   data-es="Explicabilidad">Explainability</a>
-    <a href="#comparison"  data-en="Comparison"       data-es="Comparativa">Comparison</a>
-    <a href="#maps"        data-en="Maps & scenarios" data-es="Mapas y escenarios">Maps</a>
+    <a href="#overview"    data-en="Overview"          data-es="Resumen">Overview</a>
+    <a href="#data"        data-en="Data"              data-es="Datos">Data</a>
+    <a href="#ml"          data-en="Machine learning"  data-es="Aprendizaje automático">ML</a>
+    <a href="#explain"     data-en="Explainability"    data-es="Explicabilidad">Explainability</a>
+    <a href="#comparison"  data-en="Comparison"        data-es="Comparativa">Comparison</a>
+    <a href="#maps"        data-en="Maps & scenarios"  data-es="Mapas y escenarios">Maps</a>
     <a href="#predictor"   data-en="Country predictor" data-es="Predictor de país">Predictor</a>
-    <a href="#repro"       data-en="Reproducibility"  data-es="Reproducibilidad">Repro</a>
+    <a href="#repro"       data-en="Reproducibility"   data-es="Reproducibilidad">Repro</a>
+    <a href="#poster"      data-en="Draft poster"      data-es="Póster (borrador)">Poster</a>
   </div>
 </nav>
 
 <main class="wrap content">
 
-<section id="poster" class="poster-hero">
-  <h2 data-en="Visual abstract" data-es="Resumen visual">Visual abstract</h2>
-  <p data-en="A one-page academic poster summarising the data, methods, key findings and reproducibility footer for the project."
-     data-es="Un póster académico de una página que resume los datos, los métodos, los principales hallazgos y la información de reproducibilidad del proyecto.">
-    A one-page academic poster summarising data, methods and key findings.
+<section id="overview" class="overview-hero">
+  <h2 data-en="Project overview" data-es="Visión del proyecto">Project overview</h2>
+  <p class="lead"
+     data-en="A one-glance summary of the methodology, the data sources behind the analysis, the variables we feed to the AI and the headline numerical result."
+     data-es="Un resumen de un vistazo de la metodología, las fuentes de datos del análisis, las variables que alimentamos a la IA y el resultado numérico principal.">
   </p>
-  <figure class="poster-figure">
-    <a href="https://www.canva.com/design/DAHIB5uerM4/view" target="_blank" rel="noopener">
-      <img src="figures/poster_academic.png"
-           alt="Academic poster summarising the DEA + Tobit + ML pipeline">
-    </a>
-    <figcaption data-en="Click the poster to open the editable version on Canva."
-                data-es="Haz clic sobre el póster para abrir la versión editable en Canva.">
-      Click the poster to open the editable version on Canva.
-    </figcaption>
-  </figure>
+  <div class="overview-card">
+    <div class="canva-embed">
+      <iframe loading="lazy"
+              src="https://www.canva.com/design/DAHIDRTMars/view?embed"
+              allowfullscreen="allowfullscreen"
+              allow="fullscreen"
+              title="Project-overview infographic"></iframe>
+    </div>
+    <p class="muted small">
+      <a href="https://www.canva.com/design/DAHIDRTMars/view"
+         target="_blank" rel="noopener"
+         data-en="Open the editable infographic on Canva ↗"
+         data-es="Abrir la infografía editable en Canva ↗">
+         Open the editable infographic on Canva ↗
+      </a>
+    </p>
+  </div>
 </section>
 
 <section id="data">
   <h2 data-en="Data" data-es="Datos">Data</h2>
-  <p data-en="This project measures the technical efficiency of the rural tourism industry in 33 European countries and identifies the structural drivers of cross-country differences. Two complementary panels feed the analysis: the original sectoral block (5 Eurostat variables and 4 Tobit regressors) and a structural extension with 23 country-level indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
-     data-es="Este proyecto mide la eficiencia técnica del turismo rural en 33 países europeos e identifica los factores estructurales que explican las diferencias entre países. Dos paneles complementarios alimentan el análisis: el bloque sectorial original (5 variables de Eurostat y 4 regresores Tobit) y una extensión estructural con 23 indicadores a nivel país obtenidos del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.">
+  <p class="lead"
+     data-en="In plain words: we want to know which European countries make the most of their rural-tourism resources, and why. To do that we put together two tables — one with the basics about each country's tourist industry (beds, jobs, visitors), and a wider one with general information about the country (income, internet access, airports, heritage sites, etc.)."
+     data-es="En lenguaje sencillo: queremos saber qué países europeos sacan más partido a sus recursos de turismo rural, y por qué. Para ello reunimos dos tablas — una con los datos básicos del sector turístico de cada país (plazas, empleo, visitantes) y otra mucho más amplia con información general del país (renta, acceso a internet, aeropuertos, patrimonio, etc.).">
+  </p>
+  <p data-en="The analysis combines two complementary panels: the original sectoral block (5 Eurostat variables and 4 sectoral regressors) and a structural extension with 23 country-level indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
+     data-es="El análisis combina dos paneles complementarios: el bloque sectorial original (5 variables de Eurostat y 4 regresores sectoriales) y una extensión estructural con 23 indicadores a nivel país obtenidos del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.">
     Two panels: the original Eurostat sectoral block and a 23-indicator structural extension.
   </p>
 
@@ -144,9 +156,13 @@
 
 <section id="ml">
   <h2 data-en="Machine learning" data-es="Aprendizaje automático">Machine learning</h2>
-  <p data-en="Six learners are trained on the same target (CCR-style efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the extended panel with 23 structural indicators."
-     data-es="Se entrenan seis algoritmos sobre la misma variable objetivo (eficiencia tipo CCR) y se evalúan con validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos: el baseline de cuatro variables y la extensión con 23 indicadores estructurales.">
-    Six learners + Ridge-stacked ensemble · leave-one-out CV.
+  <p class="lead"
+     data-en="In plain words: we ask several artificial-intelligence programs to learn the relationship between a country's profile and its rural-tourism efficiency, and we score how well each one would predict a country it has never seen."
+     data-es="En lenguaje sencillo: pedimos a varios programas de inteligencia artificial que aprendan la relación entre el perfil de un país y su eficiencia en turismo rural, y medimos lo bien que cada uno predeciría un país que nunca ha visto.">
+  </p>
+  <p data-en="Five learners plus a stacked ensemble are trained on the same target (CCR-style efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the extended panel with 23 structural indicators."
+     data-es="Cinco algoritmos y un ensemble apilado se entrenan sobre la misma variable objetivo (eficiencia tipo CCR) y se evalúan con validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos: el baseline de cuatro variables y la extensión con 23 indicadores estructurales.">
+    Five learners + Ridge-stacked ensemble · leave-one-out CV.
   </p>
   <ul class="model-list">
     <li><b>Elastic Net</b> · <span data-en="linear baseline with L1+L2 penalty" data-es="baseline lineal con penalización L1+L2">linear baseline</span></li>
@@ -154,7 +170,6 @@
     <li><b>Gradient Boosting</b> · <span data-en="sequential trees minimising squared loss" data-es="árboles secuenciales con pérdida cuadrática">sequential trees</span></li>
     <li><b>XGBoost</b> · <span data-en="regularised gradient boosting" data-es="gradient boosting regularizado">regularised boosting</span></li>
     <li><b>LightGBM</b> · <span data-en="histogram-based gradient boosting" data-es="boosting basado en histogramas">histogram boosting</span></li>
-    <li><b>Multilayer Perceptron</b> · <span data-en="64-32 hidden units, ReLU + Adam" data-es="64-32 unidades ocultas, ReLU y Adam">MLP</span></li>
     <li><b>Stacked ensemble</b> · <span data-en="Ridge meta-learner over the 5 base estimators" data-es="meta-aprendiz Ridge sobre los 5 estimadores base">Ridge meta-learner</span></li>
   </ul>
   <figure>
@@ -171,6 +186,10 @@
 
 <section id="explain">
   <h2 data-en="Explainability" data-es="Explicabilidad">Explainability</h2>
+  <p class="lead"
+     data-en="In plain words: even when an AI predicts well, we want to know why. This section opens the model and shows which country features push the prediction up or down — globally, on average, and country by country."
+     data-es="En lenguaje sencillo: aunque la IA prediga bien, nos importa saber por qué. Esta sección abre el modelo y muestra qué características de cada país tiran la predicción hacia arriba o hacia abajo — a nivel global, en promedio y país por país.">
+  </p>
   <p data-en="The pipeline never stops at predictions; it explains them through three complementary lenses."
      data-es="La canalización no se queda en las predicciones; las explica con tres lentes complementarias.">
     Three complementary explainability lenses.
@@ -219,6 +238,10 @@
 
 <section id="comparison">
   <h2 data-en="Comparative scoreboard" data-es="Cuadro comparativo">Comparative scoreboard</h2>
+  <p class="lead"
+     data-en="In plain words: a single side-by-side table where each method gets one comparable score, so you can see at a glance which one performs best and pick a winner."
+     data-es="En lenguaje sencillo: una tabla única que pone todos los métodos en una sola escala, para que se vea de un vistazo cuál funciona mejor y poder elegir un ganador.">
+  </p>
   <p data-en="Every estimator is reported in a single table with a comparable performance metric. The best model — selected as the ML estimator with the highest leave-one-out R² on the extended panel — drives the scenario projections that follow."
      data-es="Cada estimador se reporta en una única tabla con una métrica de desempeño comparable. El mejor modelo —seleccionado como el estimador IA con mayor R² leave-one-out en el panel ampliado— alimenta las proyecciones de escenarios que siguen.">
     Single comparative table; the best ML estimator drives the scenario projections.
@@ -235,6 +258,10 @@
 
 <section id="maps">
   <h2 data-en="Maps and future scenarios" data-es="Mapas y escenarios futuros">Maps and future scenarios</h2>
+  <p class="lead"
+     data-en="In plain words: we paint Europe according to today's efficiency, and then ask the model what would happen if rural tourism behaved differently in the future — under three plausible scenarios."
+     data-es="En lenguaje sencillo: pintamos Europa según la eficiencia actual y después preguntamos al modelo qué pasaría si el turismo rural se comportase de otra forma en el futuro — bajo tres escenarios plausibles.">
+  </p>
   <p data-en="The first map shows the empirical density of CCR efficiency across the 33 European countries. The next three are forward-looking projections produced by the best ML estimator under different perturbations of the four sectoral regressors."
      data-es="El primer mapa muestra la densidad empírica de la eficiencia CCR entre los 33 países europeos. Los tres siguientes son proyecciones a futuro generadas por el mejor estimador IA bajo distintas perturbaciones de los cuatro regresores sectoriales.">
     Density map + three counter-factual scenarios.
@@ -290,10 +317,36 @@
 
 <section id="predictor">
   <h2 data-en="Country predictor (out-of-sample)" data-es="Predictor de país (fuera de muestra)">Country predictor (out-of-sample)</h2>
+  <p class="lead"
+     data-en="In plain words: pick a country that is NOT in our European panel and a future scenario; the page tells you what the AI thinks its rural-tourism efficiency would be."
+     data-es="En lenguaje sencillo: elige un país que NO esté en nuestro panel europeo y un escenario futuro; la página te dice cuál sería su eficiencia en turismo rural según la IA.">
+  </p>
   <p data-en="Pick a country that is NOT in the European study panel and a future scenario. The trained ML pipeline produces a predicted rural-tourism efficiency together with a graphical breakdown."
      data-es="Selecciona un país que NO esté en el panel europeo del estudio y un escenario futuro. La canalización IA entrenada produce una eficiencia predicha junto con un resumen gráfico.">
     Country dropdown + scenario selector → predicted efficiency + graphic.
   </p>
+
+  <div class="scenario-legend">
+    <div class="scen-card scen-int">
+      <h4 data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</h4>
+      <p data-en="Mass-tourism pattern: shorter stays, more seasonal peaks, higher tourist density and slightly less protected territory. Captures the &laquo;sun &amp; beach&raquo; archetype concentrated in summer weeks."
+         data-es="Patrón de turismo de masas: estancias más cortas, picos estacionales más marcados, mayor densidad turística y algo menos de territorio protegido. Captura el arquetipo &laquo;sol y playa&raquo; concentrado en verano.">
+      </p>
+    </div>
+    <div class="scen-card scen-base">
+      <h4 data-en="Baseline (status quo)" data-es="Línea base (status quo)">Baseline (status quo)</h4>
+      <p data-en="The country exactly as observed today. No perturbation is applied. Useful as a reference point against the two counter-factual scenarios."
+         data-es="El país tal y como se observa hoy. No se aplica ninguna perturbación. Sirve como punto de referencia frente a los dos escenarios contrafactuales.">
+      </p>
+    </div>
+    <div class="scen-card scen-dist">
+      <h4 data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</h4>
+      <p data-en="Sustainable-tourism pattern: longer stays, smoother seasonality, lower density and more protected hectares. Captures destinations that aim for fewer but higher-value visitors year-round."
+         data-es="Patrón de turismo sostenible: estancias más largas, estacionalidad más suave, menor densidad y más hectáreas protegidas. Captura destinos que buscan menos visitantes pero de mayor valor todo el año.">
+      </p>
+    </div>
+  </div>
+
   <div class="predictor">
     <div class="predictor-controls">
       <label data-en="Country" data-es="País">Country</label>
@@ -305,21 +358,31 @@
         <option value="distributed" data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</option>
       </select>
     </div>
-    <div class="predictor-summary">
-      <div class="metric-card">
-        <p class="muted" data-en="Predicted CCR efficiency" data-es="Eficiencia CCR predicha">Predicted CCR efficiency</p>
-        <p id="ext-score" class="metric-value">—</p>
-        <p id="ext-rank" class="muted" data-en="" data-es=""></p>
+    <div class="predictor-summary two-charts">
+      <div class="chart-host tall">
+        <canvas id="ext-rank-chart"></canvas>
       </div>
       <div class="chart-host">
-        <canvas id="ext-chart" height="220"></canvas>
+        <canvas id="ext-chart"></canvas>
       </div>
+    </div>
+    <div class="predictor-meta">
+      <p class="muted small">
+        <span data-en="Predicted CCR efficiency:" data-es="Eficiencia CCR predicha:">Predicted CCR efficiency:</span>
+        <b id="ext-score">—</b>
+        ·
+        <span id="ext-rank"></span>
+      </p>
     </div>
   </div>
 </section>
 
 <section id="repro">
   <h2 data-en="Reproducibility" data-es="Reproducibilidad">Reproducibility</h2>
+  <p class="lead"
+     data-en="In plain words: every figure, table and prediction on this page can be recreated from scratch in under ten minutes by running the scripts below in order."
+     data-es="En lenguaje sencillo: cualquier figura, tabla o predicción de esta página se puede reproducir desde cero en menos de diez minutos ejecutando los scripts de abajo en orden.">
+  </p>
   <p data-en="The full pipeline runs from a clean clone in under ten minutes:"
      data-es="La canalización completa se ejecuta desde un clon limpio en menos de diez minutos:">
     Full pipeline from a clean clone:
@@ -335,6 +398,26 @@ python scripts/06_make_figures.py        # bilingual plots
 python scripts/07_make_maps.py           # choropleth maps
 python scripts/08_predict_non_study.py   # external-country JSON
 python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
+</section>
+
+<section id="poster" class="poster-bottom">
+  <h2 data-en="Draft poster" data-es="Póster (borrador)">Draft poster</h2>
+  <p class="lead"
+     data-en="A first draft of a possible poster design for presenting the results."
+     data-es="Este es un borrador del posible diseño del póster para presentación de resultados.">
+    A first draft of a possible poster design for presenting the results.
+  </p>
+  <figure class="poster-figure">
+    <a href="https://www.canva.com/design/DAHIB5uerM4/view"
+       target="_blank" rel="noopener" title="Open in Canva">
+      <img src="figures/poster_academic.png"
+           alt="Draft academic poster">
+    </a>
+    <figcaption data-en="Click the poster to open the editable Canva file."
+                data-es="Haz clic en el póster para abrir el archivo editable en Canva.">
+      Click the poster to open the editable Canva file.
+    </figcaption>
+  </figure>
 </section>
 
 <footer>
@@ -421,7 +504,8 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
     predictor = await fetch('data/non_study_predictions.json').then(r => r.json());
   } catch (e) {}
 
-  let chart = null;
+  let chartScenario = null;
+  let chartRank = null;
   function renderPredictor() {
     if (!predictor) return;
     const sel = document.getElementById('ext-country');
@@ -443,29 +527,72 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
       rankEl.textContent = T[lang].no_data;
       return;
     }
+
     const value = data[scenario];
     scoreEl.textContent = value.toFixed(3);
+
     const sortedAll = Object.entries(predictor.countries)
       .map(([c, v]) => ({ country: c, score: v[scenario] }))
       .sort((a, b) => b.score - a.score);
     const idx = sortedAll.findIndex(r => r.country === country);
-    rankEl.textContent = `#${idx + 1} / ${sortedAll.length}`;
+    rankEl.textContent = '#' + (idx + 1) + ' / ' + sortedAll.length;
 
-    const ctx = document.getElementById('ext-chart').getContext('2d');
+    // Ranking chart (left): full sorted list of non-study countries,
+    // selected one highlighted in terracotta.
+    const rankCtx = document.getElementById('ext-rank-chart').getContext('2d');
+    if (chartRank) chartRank.destroy();
+    chartRank = new Chart(rankCtx, {
+      type: 'bar',
+      data: {
+        labels: sortedAll.map(r => r.country),
+        datasets: [{
+          label: lang === 'es' ? 'CCR predicha' : 'Predicted CCR',
+          data: sortedAll.map(r => r.score),
+          backgroundColor: sortedAll.map(r =>
+            r.country === country ? "#E76F51" : "#264653"),
+          borderRadius: 4,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: lang === 'es'
+              ? 'Ranking — CCR predicha (' +
+                ({intensive: 'demanda intensiva',
+                  baseline: 'línea base',
+                  distributed: 'demanda distribuida'}[scenario]) + ')'
+              : 'Ranking — predicted CCR (' + scenario + ')',
+            font: { family: 'EB Garamond, serif', size: 15 },
+          },
+        },
+        scales: {
+          x: { beginAtZero: true, max: 1.05, ticks: { stepSize: 0.2 } },
+          y: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        },
+      },
+    });
+
+    // Per-scenario chart (right): the three scenario projections for the
+    // selected country.
+    const scnCtx = document.getElementById('ext-chart').getContext('2d');
     const labels = ["intensive", "baseline", "distributed"];
     const labelText = lang === 'es'
       ? ["Demanda intensiva", "Línea base", "Demanda distribuida"]
       : ["Intensive demand", "Baseline", "Distributed demand"];
     const values = labels.map(l => data[l]);
-    if (chart) chart.destroy();
-    chart = new Chart(ctx, {
+    if (chartScenario) chartScenario.destroy();
+    chartScenario = new Chart(scnCtx, {
       type: 'bar',
       data: {
         labels: labelText,
         datasets: [{
           label: country,
           data: values,
-          backgroundColor: ["#2A9D8F", "#264653", "#E76F51"],
+          backgroundColor: ["#E76F51", "#264653", "#2A9D8F"],
           borderRadius: 6,
         }],
       },
@@ -476,9 +603,9 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
           title: {
             display: true,
             text: country + ' — ' +
-                  (lang === 'es' ? 'Eficiencia CCR predicha por escenario'
-                                 : 'Predicted CCR efficiency by scenario'),
-            font: { family: 'EB Garamond, serif', size: 16 },
+                  (lang === 'es' ? 'CCR predicha por escenario'
+                                 : 'Predicted CCR by scenario'),
+            font: { family: 'EB Garamond, serif', size: 15 },
           },
         },
         scales: {

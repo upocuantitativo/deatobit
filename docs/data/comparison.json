@@ -66,9 +66,9 @@
       "block": "Machine learning (baseline)",
       "model": "RandomForest",
       "metric_label": "R^2 LOO",
-      "metric_value": 0.1054824221635936,
+      "metric_value": 0.1054824221635942,
       "metric_secondary": "RMSE 0.1547",
-      "metric_value_num": 0.1054824221635936
+      "metric_value_num": 0.1054824221635942
     },
     {
       "block": "Machine learning (baseline)",
@@ -95,14 +95,6 @@
       "metric_value_num": -0.065556713492932
     },
     {
-      "block": "Machine learning (baseline)",
-      "model": "NeuralNetwork",
-      "metric_label": "R^2 LOO",
-      "metric_value": -34.59632322600664,
-      "metric_secondary": "RMSE 0.9761",
-      "metric_value_num": -34.59632322600664
-    },
-    {
       "block": "Machine learning (extended)",
       "model": "ElasticNet",
       "metric_label": "R^2 LOO",
@@ -114,9 +106,9 @@
       "block": "Machine learning (extended)",
       "model": "RandomForest",
       "metric_label": "R^2 LOO",
-      "metric_value": 0.2348911511755779,
+      "metric_value": 0.2348911511755772,
       "metric_secondary": "RMSE 0.1490",
-      "metric_value_num": 0.2348911511755779
+      "metric_value_num": 0.2348911511755772
     },
     {
       "block": "Machine learning (extended)",
@@ -141,14 +133,6 @@
       "metric_value": -0.0784023694311661,
       "metric_secondary": "RMSE 0.1769",
       "metric_value_num": -0.0784023694311661
-    },
-    {
-      "block": "Machine learning (extended)",
-      "model": "NeuralNetwork",
-      "metric_label": "R^2 LOO",
-      "metric_value": -4.398983831015231,
-      "metric_secondary": "RMSE 0.3959",
-      "metric_value_num": -4.398983831015231
     }
   ]
 }

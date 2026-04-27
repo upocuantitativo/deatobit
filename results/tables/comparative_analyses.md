@@ -11,12 +11,10 @@
 | Machine learning (baseline) | GradientBoosting | R^2 LOO | 0.0784 | RMSE 0.1571 |
 | Machine learning (baseline) | XGBoost | R^2 LOO | 0.0248 | RMSE 0.1616 |
 | Machine learning (baseline) | LightGBM | R^2 LOO | -0.0656 | RMSE 0.1689 |
-| Machine learning (baseline) | NeuralNetwork | R^2 LOO | -34.5963 | RMSE 0.9761 |
 | Machine learning (extended) | ElasticNet | R^2 LOO | 0.2524 | RMSE 0.1473 |
 | Machine learning (extended) | RandomForest | R^2 LOO | 0.2349 | RMSE 0.1490 |
 | Machine learning (extended) | GradientBoosting | R^2 LOO | -0.0067 | RMSE 0.1709 |
 | Machine learning (extended) | XGBoost | R^2 LOO | 0.3231 | RMSE 0.1402 |
 | Machine learning (extended) | LightGBM | R^2 LOO | -0.0784 | RMSE 0.1769 |
-| Machine learning (extended) | NeuralNetwork | R^2 LOO | -4.3990 | RMSE 0.3959 |
 
 **Best estimator** — Machine learning (extended) · `XGBoost` · R^2 LOO = 0.3231
