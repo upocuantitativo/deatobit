@@ -32,7 +32,6 @@
 
 <nav class="toc">
   <div class="wrap">
-    <a href="#overview"    data-en="Overview"          data-es="Resumen">Overview</a>
     <a href="#methodology" data-en="Methodology"       data-es="Metodología">Methodology</a>
     <a href="#data"        data-en="Data"              data-es="Datos">Data</a>
     <a href="#ml"          data-en="Machine learning"  data-es="Aprendizaje automático">ML</a>
@@ -41,36 +40,11 @@
     <a href="#maps"        data-en="Maps & scenarios"  data-es="Mapas y escenarios">Maps</a>
     <a href="#predictor"   data-en="Country predictor" data-es="Predictor de país">Predictor</a>
     <a href="#repro"       data-en="Reproducibility"   data-es="Reproducibilidad">Repro</a>
-    <a href="#poster"      data-en="Draft poster"      data-es="Póster (borrador)">Poster</a>
   </div>
 </nav>
 
 <main class="wrap content">
 
-<section id="overview" class="overview-hero">
-  <h2 data-en="Project overview" data-es="Visión del proyecto">Project overview</h2>
-  <p class="lead"
-     data-en="A one-glance summary of the methodology, the data sources behind the analysis, the variables we feed to the AI and the headline numerical result."
-     data-es="Un resumen de un vistazo de la metodología, las fuentes de datos del análisis, las variables que alimentamos a la IA y el resultado numérico principal.">
-  </p>
-  <div class="overview-card">
-    <div class="canva-embed">
-      <iframe loading="lazy"
-              src="https://www.canva.com/design/DAHIDRTMars/view?embed"
-              allowfullscreen="allowfullscreen"
-              allow="fullscreen"
-              title="Project-overview infographic"></iframe>
-    </div>
-    <p class="muted small">
-      <a href="https://www.canva.com/design/DAHIDRTMars/view"
-         target="_blank" rel="noopener"
-         data-en="Open the editable infographic on Canva ↗"
-         data-es="Abrir la infografía editable en Canva ↗">
-         Open the editable infographic on Canva ↗
-      </a>
-    </p>
-  </div>
-</section>
 
 <section id="methodology">
   <h2 data-en="Methodology" data-es="Metodología">Methodology</h2>
@@ -321,7 +295,7 @@
     <tbody>
       <tr><td data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</td><td>−15%</td><td>+25%</td><td>+20%</td><td>−10%</td></tr>
       <tr><td data-en="Baseline (status quo)" data-es="Línea base (status quo)">Baseline</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr>
-      <tr><td data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</td><td>+20%</td><td>−25%</td><td>−15%</td><td>+10%</td></tr>
+      <tr><td data-en="Sustainable demand" data-es="Demanda sostenible">Sustainable demand</td><td>+20%</td><td>−25%</td><td>−15%</td><td>+10%</td></tr>
     </tbody>
   </table>
   <p class="muted small"
@@ -347,8 +321,8 @@
       <figcaption data-en="Figure 8b. Baseline (status quo)." data-es="Figura 8b. Línea base (status quo).">Figure 8b.</figcaption>
     </figure>
     <figure>
-      <img src="figures/map_distributed.png" alt="Distributed demand scenario">
-      <figcaption data-en="Figure 8c. Distributed-demand scenario." data-es="Figura 8c. Escenario de demanda distribuida.">Figure 8c.</figcaption>
+      <img src="figures/map_distributed.png" alt="Sustainable demand scenario">
+      <figcaption data-en="Figure 8c. Sustainable-demand scenario." data-es="Figura 8c. Escenario de demanda sostenible.">Figure 8c.</figcaption>
     </figure>
   </div>
   <figure>
@@ -383,7 +357,7 @@
       </p>
     </div>
     <div class="scen-card scen-dist">
-      <h4 data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</h4>
+      <h4 data-en="Sustainable demand" data-es="Demanda sostenible">Sustainable demand</h4>
       <p data-en="Sustainable-tourism pattern: longer stays, smoother seasonality, lower density and more protected hectares. Captures destinations that aim for fewer but higher-value visitors year-round."
          data-es="Patrón de turismo sostenible: estancias más largas, estacionalidad más suave, menor densidad y más hectáreas protegidas. Captura destinos que buscan menos visitantes pero de mayor valor todo el año.">
       </p>
@@ -398,7 +372,7 @@
       <select id="ext-scenario">
         <option value="intensive"   data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</option>
         <option value="baseline" selected data-en="Baseline (status quo)" data-es="Línea base (status quo)">Baseline</option>
-        <option value="distributed" data-en="Distributed demand" data-es="Demanda distribuida">Distributed demand</option>
+        <option value="distributed" data-en="Sustainable demand" data-es="Demanda sostenible">Sustainable demand</option>
       </select>
     </div>
     <div class="predictor-summary two-charts">
@@ -441,26 +415,6 @@ python scripts/06_make_figures.py        # bilingual plots
 python scripts/07_make_maps.py           # choropleth maps
 python scripts/08_predict_non_study.py   # external-country JSON
 python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
-</section>
-
-<section id="poster" class="poster-bottom">
-  <h2 data-en="Draft poster" data-es="Póster (borrador)">Draft poster</h2>
-  <p class="lead"
-     data-en="A first draft of a possible poster design for presenting the results."
-     data-es="Este es un borrador del posible diseño del póster para presentación de resultados.">
-    A first draft of a possible poster design for presenting the results.
-  </p>
-  <figure class="poster-figure">
-    <a href="https://www.canva.com/design/DAHIB5uerM4/view"
-       target="_blank" rel="noopener" title="Open in Canva">
-      <img src="figures/poster_academic.png"
-           alt="Draft academic poster">
-    </a>
-    <figcaption data-en="Click the poster to open the editable Canva file."
-                data-es="Haz clic en el póster para abrir el archivo editable en Canva.">
-      Click the poster to open the editable Canva file.
-    </figcaption>
-  </figure>
 </section>
 
 <footer>
@@ -607,7 +561,7 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
               ? 'Ranking — CCR predicha (' +
                 ({intensive: 'demanda intensiva',
                   baseline: 'línea base',
-                  distributed: 'demanda distribuida'}[scenario]) + ')'
+                  distributed: 'demanda sostenible'}[scenario]) + ')'
               : 'Ranking — predicted CCR (' + scenario + ')',
             font: { family: 'EB Garamond, serif', size: 15 },
           },
@@ -624,8 +578,8 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
     const scnCtx = document.getElementById('ext-chart').getContext('2d');
     const labels = ["intensive", "baseline", "distributed"];
     const labelText = lang === 'es'
-      ? ["Demanda intensiva", "Línea base", "Demanda distribuida"]
-      : ["Intensive demand", "Baseline", "Distributed demand"];
+      ? ["Demanda intensiva", "Línea base", "Demanda sostenible"]
+      : ["Intensive demand", "Baseline", "Sustainable demand"];
     const values = labels.map(l => data[l]);
     if (chartScenario) chartScenario.destroy();
     chartScenario = new Chart(scnCtx, {

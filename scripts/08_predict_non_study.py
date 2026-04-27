@@ -73,7 +73,7 @@ def main() -> None:
     metrics = pd.read_csv(TABLES / "ml_loo_metrics_extended.csv", index_col=0)
     best_model = metrics["r2_loo"].idxmax()
     model = fitted[best_model]
-    feature_cols = list(model.named_steps["scaler"].feature_names_in_)
+    feature_cols = list(model.named_steps["imputer"].feature_names_in_)
 
     sub = panel_ext.dropna(subset=feature_cols).copy()
     base_X = sub[feature_cols].copy()

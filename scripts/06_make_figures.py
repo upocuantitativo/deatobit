@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 import shap
 from sklearn.inspection import partial_dependence
+from sklearn.pipeline import Pipeline
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -278,8 +279,8 @@ def figure_scenario_panel(scenario_summary: dict, lang: str) -> None:
     tags = ["intensive", "baseline", "distributed"]
     means = [scenario_summary["scenarios"][t]["mean"] for t in tags]
     labels = {
-        "en": ["Intensive demand", "Baseline", "Distributed demand"],
-        "es": ["Demanda intensiva", "Línea base", "Demanda distribuida"],
+        "en": ["Intensive demand", "Baseline", "Sustainable demand"],
+        "es": ["Demanda intensiva", "Línea base", "Demanda sostenible"],
     }[lang]
     colors = [COLORS[4], COLORS[6], COLORS[1]]
     fig, ax = newfig(figsize=(6, 4))
@@ -297,7 +298,8 @@ def figure_scenario_panel(scenario_summary: dict, lang: str) -> None:
 def figure_country_shap(model, X: pd.DataFrame, country: str, lang: str,
                         tag: str) -> None:
     estimator = model.named_steps["model"]
-    Xs = model.named_steps["scaler"].transform(X)
+    pre = Pipeline(model.steps[:-1])
+    Xs = pre.transform(X)
     Xs_df = pd.DataFrame(Xs, columns=X.columns, index=X.index)
     explainer = shap.TreeExplainer(estimator)
     sv = explainer.shap_values(Xs_df.loc[[country]])

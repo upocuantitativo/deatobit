@@ -23,43 +23,78 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 import shap
-from lightgbm import LGBMRegressor
 from sklearn.ensemble import (GradientBoostingRegressor, RandomForestRegressor,
                               StackingRegressor)
+from sklearn.impute import SimpleImputer
 from sklearn.inspection import permutation_importance
 from sklearn.linear_model import ElasticNetCV, Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import LeaveOneOut
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
 from xgboost import XGBRegressor
 
 RANDOM_STATE = 42
 
+# Heavily right-skewed variables for which a log-transform helps the linear
+# baseline and stabilises the tree splits.
+LOG_FEATURES = {
+    "gdp_per_capita_usd", "gdp_per_capita_ppp", "tourism_receipts_usd",
+    "tourism_arrivals", "tourism_expenditures", "air_passengers",
+    "population_total", "protected_hectares", "airports_intl",
+    "unesco_sites",
+}
 
-def _pipeline(model) -> Pipeline:
-    return Pipeline([("scaler", StandardScaler()), ("model", model)])
+
+def _log_transform(X: np.ndarray, columns: list[str]) -> np.ndarray:
+    """Apply log1p to columns that appear in LOG_FEATURES and pass the rest
+    through unchanged. ``columns`` is the column order of the input frame."""
+    Xv = np.asarray(X, dtype=float).copy()
+    for j, col in enumerate(columns):
+        if col in LOG_FEATURES:
+            Xv[:, j] = np.log1p(np.maximum(Xv[:, j], 0))
+    return Xv
 
 
-def build_models() -> Dict[str, Pipeline]:
+def _pipeline(model, columns: list[str] | None = None) -> Pipeline:
+    """Median-impute → optional log-transform → standard-scale → estimator."""
+    steps = [("imputer", SimpleImputer(strategy="median"))]
+    if columns is not None and any(c in LOG_FEATURES for c in columns):
+        steps.append(("logger", FunctionTransformer(
+            _log_transform, kw_args={"columns": columns}, validate=False)))
+    steps.append(("scaler", StandardScaler()))
+    steps.append(("model", model))
+    return Pipeline(steps)
+
+
+def build_models(columns: list[str] | None = None) -> Dict[str, Pipeline]:
+    """Five small-sample-friendly learners.
+
+    Hyperparameters are chosen to favour regularisation over capacity:
+    shallow trees, leaf-size lower bounds, strong L2 penalties on linear
+    and boosted estimators, and a slow learning rate compensated by more
+    trees.
+    """
     return {
         "ElasticNet": _pipeline(ElasticNetCV(
-            alphas=np.logspace(-3, 1, 25), l1_ratio=[.1, .3, .5, .7, .9],
-            cv=5, random_state=RANDOM_STATE, max_iter=20000)),
+            alphas=np.logspace(-3, 1, 30),
+            l1_ratio=[.05, .2, .4, .6, .8, .95],
+            cv=5, random_state=RANDOM_STATE, max_iter=30000), columns),
         "RandomForest": _pipeline(RandomForestRegressor(
-            n_estimators=600, max_depth=None, min_samples_leaf=2,
-            random_state=RANDOM_STATE, n_jobs=-1)),
+            n_estimators=900, max_depth=4, min_samples_leaf=3,
+            max_features=0.7, random_state=RANDOM_STATE, n_jobs=-1), columns),
         "GradientBoosting": _pipeline(GradientBoostingRegressor(
-            n_estimators=400, learning_rate=0.05, max_depth=3,
-            random_state=RANDOM_STATE)),
+            n_estimators=600, learning_rate=0.03, max_depth=2,
+            min_samples_leaf=3, subsample=0.85,
+            random_state=RANDOM_STATE), columns),
         "XGBoost": _pipeline(XGBRegressor(
-            n_estimators=500, learning_rate=0.05, max_depth=3,
-            subsample=0.8, colsample_bytree=0.8, reg_lambda=1.0,
-            random_state=RANDOM_STATE, n_jobs=-1, verbosity=0)),
-        "LightGBM": _pipeline(LGBMRegressor(
-            n_estimators=600, learning_rate=0.05, max_depth=-1,
-            num_leaves=15, subsample=0.8, colsample_bytree=0.8,
-            random_state=RANDOM_STATE, n_jobs=-1, verbosity=-1)),
+            n_estimators=900, learning_rate=0.03, max_depth=3,
+            min_child_weight=3, subsample=0.85, colsample_bytree=0.75,
+            reg_alpha=0.5, reg_lambda=2.0,
+            random_state=RANDOM_STATE, n_jobs=-1, verbosity=0), columns),
+        "kNN": _pipeline(KNeighborsRegressor(
+            n_neighbors=5, weights="distance"), columns),
     }
 
 
@@ -114,9 +149,14 @@ def permutation_table(models: Dict[str, Pipeline],
 
 
 def shap_summary(model: Pipeline, X: pd.DataFrame) -> pd.DataFrame:
-    """Mean absolute SHAP value per feature for tree-based estimators."""
+    """Mean absolute SHAP value per feature for tree-based estimators.
+
+    Replays the preprocessing chain (impute → optional log → scale)
+    before handing the matrix to the explainer.
+    """
     estimator = model.named_steps["model"]
-    Xs = model.named_steps["scaler"].transform(X)
+    pre = Pipeline(model.steps[:-1])
+    Xs = pre.transform(X)
     try:
         explainer = shap.TreeExplainer(estimator)
         sv = explainer.shap_values(Xs)
@@ -131,7 +171,6 @@ def shap_summary(model: Pipeline, X: pd.DataFrame) -> pd.DataFrame:
 
 def stacked_ensemble(models: Dict[str, Pipeline]) -> StackingRegressor:
     base = [(n, m) for n, m in models.items()
-            if n in {"RandomForest", "XGBoost", "LightGBM",
-                     "GradientBoosting", "ElasticNet"}]
-    return StackingRegressor(estimators=base, final_estimator=Ridge(alpha=1.0),
+            if n in {"RandomForest", "XGBoost", "GradientBoosting", "kNN"}]
+    return StackingRegressor(estimators=base, final_estimator=Ridge(alpha=2.0),
                              cv=5, n_jobs=-1)

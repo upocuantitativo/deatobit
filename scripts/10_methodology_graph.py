@@ -1,26 +1,35 @@
 """Render an editable flowchart that summarises the project's methodology.
 
-The graph is intentionally written as plain Python data structures so that
-nodes, edges, colours, fonts and layout offsets can be edited without
-touching any visual library calls. Re-running the script regenerates two
-images under ``results/figures/`` (English version) and prints a textual
-summary on stdout that mirrors what the figure shows.
+Design notes:
 
-  * Inputs  : the lists ``PHASES`` and ``EDGES`` defined below.
-  * Outputs : results/figures/methodology_graph.png
-              results/figures/methodology_graph.svg
+  * The layout is a strict left-to-right DAG with one column per stage
+    (Inputs → Estimation → Diagnostics → Projection → Outputs). All
+    arrows therefore travel forward, which removes back-edges and makes
+    crossings rare.
+  * Box widths and heights are fixed and chosen so that wrapped text
+    always fits inside them. Re-flowing the labels is enough to change
+    the figure layout — no manual tweaking of positions needed.
+  * Arrow endpoints are computed as the intersection between the
+    straight line connecting two box centres and the rectangular border
+    of the destination box. The arrow head therefore lands on the box
+    edge instead of crossing into it.
+  * If two boxes lie in the same column, the arrow is bent into a
+    Bezier curve that routes around any intermediate column. This is
+    triggered by edges that cross more than one column.
 
-The drawing uses pure matplotlib; networkx is used only for topological
-ordering. Tweak ``LAYOUT`` to relocate any node manually.
+Inputs:  ``PHASES``, ``EDGES``, ``COLUMNS`` and ``STAGE_COLORS`` below.
+Outputs: ``results/figures/methodology_graph.png`` and ``.svg``.
 """
 from __future__ import annotations
 
 import sys
+import textwrap
 from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import networkx as nx
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.path import Path as MplPath
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -35,15 +44,15 @@ PHASES: list[dict] = [
     {"id": "data",      "label": "1. Data ingestion",
      "subtitle": "Eurostat panel + WB API + UNESCO + CIA Factbook",
      "stage": "Inputs"},
-    {"id": "dea",       "label": "2. DEA frontier",
+    {"id": "extend",    "label": "2. Structural extension",
+     "subtitle": "23 country-level indicators (WB, UNESCO, Factbook)",
+     "stage": "Inputs"},
+    {"id": "dea",       "label": "3. DEA frontier",
      "subtitle": "CCR · BCC · Super-efficiency · SBM",
      "stage": "Estimation"},
-    {"id": "tobit",     "label": "3. Censored regression",
-     "subtitle": "Tobit (MLE + OPG) · Simar-Wilson bootstrap",
+    {"id": "tobit",     "label": "4. Censored regression",
+     "subtitle": "Tobit MLE + OPG · Simar-Wilson bootstrap",
      "stage": "Estimation"},
-    {"id": "extend",    "label": "4. Structural extension",
-     "subtitle": "23 country-level indicators",
-     "stage": "Inputs"},
     {"id": "ml",        "label": "5. Machine-learning estimators",
      "subtitle": "Elastic Net · RF · GBM · XGBoost · LightGBM · Stack",
      "stage": "Estimation"},
@@ -66,14 +75,14 @@ PHASES: list[dict] = [
 
 EDGES: list[tuple[str, str]] = [
     ("data", "dea"),
-    ("dea", "tobit"),
     ("data", "extend"),
+    ("dea", "tobit"),
     ("dea", "ml"),
     ("extend", "ml"),
-    ("ml", "explain"),
-    ("ml", "compare"),
-    ("tobit", "compare"),
     ("dea", "compare"),
+    ("tobit", "compare"),
+    ("ml", "compare"),
+    ("ml", "explain"),
     ("ml", "scenarios"),
     ("scenarios", "predictor"),
     ("explain", "report"),
@@ -81,17 +90,13 @@ EDGES: list[tuple[str, str]] = [
     ("predictor", "report"),
 ]
 
-LAYOUT: dict[str, tuple[float, float]] = {
-    "data":      (0.0, 4.0),
-    "extend":    (0.0, 2.5),
-    "dea":       (1.6, 4.0),
-    "tobit":     (1.6, 5.2),
-    "ml":        (3.4, 3.2),
-    "explain":   (5.2, 4.6),
-    "compare":   (5.2, 2.8),
-    "scenarios": (7.0, 3.8),
-    "predictor": (8.6, 3.8),
-    "report":    (10.0, 3.2),
+# Column index per stage (left → right).
+COLUMNS = {
+    "Inputs":      0,
+    "Estimation":  1,
+    "Diagnostics": 2,
+    "Projection":  3,
+    "Outputs":     4,
 }
 
 STAGE_COLORS = {
@@ -102,90 +107,176 @@ STAGE_COLORS = {
     "Outputs":     "#E76F51",
 }
 
+# Drawing constants.
+BOX_W = 2.7    # width of each phase box (data units)
+BOX_H = 1.2    # height of each phase box
+COL_GAP = 1.6  # horizontal gap between columns
+ROW_GAP = 0.55 # vertical gap between rows in the same column
+WRAP_TITLE = 26
+WRAP_SUB = 32
+
+
+# ---------------------------------------------------------------------------
+# Layout
+# ---------------------------------------------------------------------------
+def compute_layout() -> dict[str, tuple[float, float]]:
+    """Place each phase at the centre of its (column, row-in-column) cell."""
+    by_col: dict[int, list[str]] = {}
+    for p in PHASES:
+        col = COLUMNS[p["stage"]]
+        by_col.setdefault(col, []).append(p["id"])
+
+    layout: dict[str, tuple[float, float]] = {}
+    for col, ids in by_col.items():
+        n = len(ids)
+        # Vertically centre the column on y = 0.
+        total = n * BOX_H + (n - 1) * ROW_GAP
+        top = total / 2 - BOX_H / 2
+        for k, _id in enumerate(ids):
+            x = col * (BOX_W + COL_GAP)
+            y = top - k * (BOX_H + ROW_GAP)
+            layout[_id] = (x, y)
+    return layout
+
+
+# ---------------------------------------------------------------------------
+# Geometry helpers
+# ---------------------------------------------------------------------------
+def _intersect_rect(cx: float, cy: float, half_w: float, half_h: float,
+                    px: float, py: float) -> tuple[float, float]:
+    """Return the point on the rectangle border (centre cx,cy, half-extents
+    half_w, half_h) that lies on the line going from the centre toward
+    the external point (px, py)."""
+    dx, dy = px - cx, py - cy
+    if dx == 0 and dy == 0:
+        return cx, cy
+    if dx == 0:
+        return cx, cy + (half_h if dy > 0 else -half_h)
+    if dy == 0:
+        return cx + (half_w if dx > 0 else -half_w), cy
+    t_x = half_w / abs(dx)
+    t_y = half_h / abs(dy)
+    t = min(t_x, t_y)
+    return cx + t * dx, cy + t * dy
+
+
+def _draw_arrow(ax, src_xy, dst_xy, color="#5d6168", curved: bool = False):
+    src_x, src_y = src_xy
+    dst_x, dst_y = dst_xy
+    # Source point is on the right edge of the source box, destination on
+    # the left edge of the destination box (when source is to the left).
+    src_pt = _intersect_rect(src_x, src_y, BOX_W / 2, BOX_H / 2, dst_x, dst_y)
+    dst_pt = _intersect_rect(dst_x, dst_y, BOX_W / 2, BOX_H / 2, src_x, src_y)
+    if curved:
+        rad = 0.18 if dst_y > src_y else -0.18
+        connectionstyle = f"arc3,rad={rad}"
+    else:
+        connectionstyle = "arc3,rad=0.0"
+    arrow = FancyArrowPatch(
+        src_pt, dst_pt, arrowstyle="-|>", mutation_scale=14,
+        linewidth=1.2, color=color,
+        connectionstyle=connectionstyle, zorder=1,
+    )
+    ax.add_patch(arrow)
+
+
+def _wrap(text: str, width: int) -> str:
+    return "\n".join(textwrap.wrap(text, width=width)) or text
+
 
 # ---------------------------------------------------------------------------
 # Drawing
 # ---------------------------------------------------------------------------
-def build_graph() -> nx.DiGraph:
-    g = nx.DiGraph()
-    for p in PHASES:
-        g.add_node(p["id"], **p)
-    g.add_edges_from(EDGES)
-    return g
+def draw(layout: dict[str, tuple[float, float]], save_to: Path,
+         fmt: str = "png") -> None:
+    cols = max(COLUMNS.values()) + 1
+    rows_max = max(
+        sum(1 for p in PHASES if p["stage"] == s)
+        for s in COLUMNS
+    )
+    fig_w = cols * (BOX_W + COL_GAP) + 1.2
+    fig_h = rows_max * (BOX_H + ROW_GAP) + 2.4
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
 
-
-def draw(g: nx.DiGraph, save_to: Path, fmt: str = "png") -> None:
-    fig, ax = plt.subplots(figsize=(13, 7))
-    ax.set_xlim(-0.7, 11.0)
-    ax.set_ylim(1.6, 6.2)
+    xs = [x for x, _ in layout.values()]
+    ys = [y for _, y in layout.values()]
+    ax.set_xlim(min(xs) - BOX_W, max(xs) + BOX_W)
+    ax.set_ylim(min(ys) - BOX_H, max(ys) + BOX_H * 1.5)
+    ax.set_aspect("equal")
     ax.axis("off")
 
-    # Edges first so they sit beneath the nodes.
-    for u, v in g.edges():
-        x1, y1 = LAYOUT[u]
-        x2, y2 = LAYOUT[v]
-        ax.annotate("",
-                    xy=(x2 - 0.55, y2), xytext=(x1 + 0.55, y1),
-                    arrowprops=dict(
-                        arrowstyle="-|>",
-                        color="#5d6168", lw=1.2, shrinkA=0, shrinkB=4,
-                        connectionstyle="arc3,rad=0.06"))
+    # ------------------------------------------------------------------
+    # Edges first (so the boxes paint on top of the arrow shafts).
+    # ------------------------------------------------------------------
+    phases_by_id = {p["id"]: p for p in PHASES}
+    for u, v in EDGES:
+        col_diff = COLUMNS[phases_by_id[v]["stage"]] - COLUMNS[phases_by_id[u]["stage"]]
+        curved = col_diff >= 2 or col_diff == 0
+        _draw_arrow(ax, layout[u], layout[v], curved=curved)
 
-    # Nodes.
-    for node, attrs in g.nodes(data=True):
-        x, y = LAYOUT[node]
-        color = STAGE_COLORS[attrs["stage"]]
-        box = mpatches.FancyBboxPatch(
-            (x - 0.65, y - 0.36), 1.3, 0.72,
-            boxstyle="round,pad=0.06",
-            linewidth=1.2, edgecolor=color,
-            facecolor="white",
+    # ------------------------------------------------------------------
+    # Boxes with wrapped text.
+    # ------------------------------------------------------------------
+    for p in PHASES:
+        x, y = layout[p["id"]]
+        color = STAGE_COLORS[p["stage"]]
+        box = FancyBboxPatch(
+            (x - BOX_W / 2, y - BOX_H / 2), BOX_W, BOX_H,
+            boxstyle="round,pad=0.03,rounding_size=0.15",
+            linewidth=1.6, edgecolor=color, facecolor="white",
+            zorder=3,
         )
         ax.add_patch(box)
-        ax.text(x, y + 0.10, attrs["label"],
+        ax.text(x, y + BOX_H * 0.18,
+                _wrap(p["label"], WRAP_TITLE),
                 ha="center", va="center",
-                fontsize=10, fontweight="bold", color="#1d1d1f")
-        ax.text(x, y - 0.18, attrs["subtitle"],
+                fontsize=10.0, fontweight="bold", color="#1d1d1f",
+                zorder=4)
+        ax.text(x, y - BOX_H * 0.20,
+                _wrap(p["subtitle"], WRAP_SUB),
                 ha="center", va="center",
-                fontsize=7.6, color="#4f545b", style="italic", wrap=True)
+                fontsize=8.0, color="#4f545b", style="italic",
+                zorder=4)
 
+    # ------------------------------------------------------------------
     # Title and stage legend.
-    ax.text(5.15, 6.05,
+    # ------------------------------------------------------------------
+    title_y = max(ys) + BOX_H * 1.2
+    ax.text((min(xs) + max(xs)) / 2, title_y,
             "European rural-tourism efficiency — methodology pipeline",
             ha="center", va="center",
             fontsize=15, fontweight="bold", color="#264653")
+
     legend_handles = [
         mpatches.Patch(facecolor="white", edgecolor=col, linewidth=1.6,
                        label=stage)
         for stage, col in STAGE_COLORS.items()
     ]
     ax.legend(handles=legend_handles, loc="lower center",
-              ncol=len(STAGE_COLORS), bbox_to_anchor=(0.5, -0.02),
+              ncol=len(STAGE_COLORS), bbox_to_anchor=(0.5, -0.04),
               frameon=False, fontsize=9)
 
     fig.savefig(save_to, dpi=300, bbox_inches="tight", format=fmt)
     plt.close(fig)
 
 
-def textual_summary(g: nx.DiGraph) -> str:
+def textual_summary() -> str:
     lines = ["Methodology phases:"]
     for p in PHASES:
-        lines.append(
-            f"  {p['label']:<32} | {p['stage']:<11} | {p['subtitle']}")
+        lines.append(f"  {p['label']:<32} | {p['stage']:<11} | {p['subtitle']}")
     lines.append("\nEdges:")
-    for u, v in g.edges():
+    for u, v in EDGES:
         lines.append(f"  {u:<10} -> {v}")
     return "\n".join(lines)
 
 
 def main() -> None:
-    g = build_graph()
-    out_png = FIGURES / "methodology_graph.png"
-    out_svg = FIGURES / "methodology_graph.svg"
-    draw(g, out_png, fmt="png")
-    draw(g, out_svg, fmt="svg")
-    print(textual_summary(g))
-    print(f"\nWrote {out_png}\nWrote {out_svg}")
+    layout = compute_layout()
+    draw(layout, FIGURES / "methodology_graph.png", fmt="png")
+    draw(layout, FIGURES / "methodology_graph.svg", fmt="svg")
+    print(textual_summary())
+    print(f"\nWrote {FIGURES / 'methodology_graph.png'}")
+    print(f"Wrote {FIGURES / 'methodology_graph.svg'}")
 
 
 if __name__ == "__main__":

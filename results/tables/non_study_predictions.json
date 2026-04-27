@@ -1,125 +1,125 @@
 {
-  "best_model": "XGBoost",
+  "best_model": "kNN",
   "countries": {
     "Russia": {
-      "intensive": 0.6805094480514526,
-      "baseline": 0.678116500377655,
-      "distributed": 0.678116500377655
+      "intensive": 0.7026117448731566,
+      "baseline": 0.702116001328315,
+      "distributed": 0.7016414008770115
     },
     "Ukraine": {
-      "intensive": 0.6538555026054382,
-      "baseline": 0.5120754837989807,
-      "distributed": 0.48961305618286133
+      "intensive": 0.6524273992425597,
+      "baseline": 0.623813195773316,
+      "distributed": 0.6234052807461355
     },
     "Belarus": {
-      "intensive": 0.7033862471580505,
-      "baseline": 0.5542958974838257,
-      "distributed": 0.5276018381118774
+      "intensive": 0.6295300821247602,
+      "baseline": 0.6284129355733387,
+      "distributed": 0.5438753945925197
     },
     "Moldova": {
-      "intensive": 0.6985031366348267,
-      "baseline": 0.7155632376670837,
-      "distributed": 0.5401598811149597
+      "intensive": 0.5339063031410564,
+      "baseline": 0.5333191010924614,
+      "distributed": 0.5334780039384206
     },
     "Georgia": {
-      "intensive": 0.7418885827064514,
-      "baseline": 0.7560127973556519,
-      "distributed": 0.5766278505325317
+      "intensive": 0.6386120530921237,
+      "baseline": 0.6406639989958594,
+      "distributed": 0.6449430025301514
     },
     "Armenia": {
-      "intensive": 0.7363841533660889,
-      "baseline": 0.6917399168014526,
-      "distributed": 0.5632535815238953
+      "intensive": 0.5892319882096568,
+      "baseline": 0.5906470388000505,
+      "distributed": 0.593697710053701
     },
     "United States": {
-      "intensive": 0.8129634857177734,
-      "baseline": 0.8129634857177734,
-      "distributed": 0.8129634857177734
+      "intensive": 0.8735330979338625,
+      "baseline": 0.8730666323682511,
+      "distributed": 0.8724554630987558
     },
     "Mexico": {
-      "intensive": 0.4831431806087494,
-      "baseline": 0.4831431806087494,
-      "distributed": 0.4831431806087494
+      "intensive": 0.8594884680844639,
+      "baseline": 0.8591176590978521,
+      "distributed": 0.8333923809911883
     },
     "Brazil": {
-      "intensive": 0.4612062871456146,
-      "baseline": 0.4612062871456146,
-      "distributed": 0.4612062871456146
+      "intensive": 0.8068627919030127,
+      "baseline": 0.8065634919794125,
+      "distributed": 0.8062442837073303
     },
     "Argentina": {
-      "intensive": 0.5496385097503662,
-      "baseline": 0.5496385097503662,
-      "distributed": 0.5496385097503662
+      "intensive": 0.7329246379542167,
+      "baseline": 0.7326090874541936,
+      "distributed": 0.7323158625857187
     },
     "Chile": {
-      "intensive": 0.6004427075386047,
-      "baseline": 0.6004427075386047,
-      "distributed": 0.6004427075386047
+      "intensive": 0.7684875994500003,
+      "baseline": 0.7681307426890261,
+      "distributed": 0.7676574020415547
     },
     "New Zealand": {
-      "intensive": 0.9292438626289368,
-      "baseline": 0.9263653755187988,
-      "distributed": 0.8675276637077332
+      "intensive": 0.8119670173489468,
+      "baseline": 0.8111104239619232,
+      "distributed": 0.8302429171719263
     },
     "Japan": {
-      "intensive": 0.931257963180542,
-      "baseline": 0.9312175512313843,
-      "distributed": 0.851158857345581
+      "intensive": 0.9264070480849178,
+      "baseline": 0.9259094078028366,
+      "distributed": 0.925360350698918
     },
     "South Korea": {
-      "intensive": 0.9434864521026611,
-      "baseline": 0.9433103799819946,
-      "distributed": 0.8685572147369385
+      "intensive": 0.8554714785881413,
+      "baseline": 0.8547681216580394,
+      "distributed": 0.8538947661820825
     },
     "India": {
-      "intensive": 0.6919187903404236,
-      "baseline": 0.6919187903404236,
-      "distributed": 0.6919187903404236
+      "intensive": 0.7581373909443888,
+      "baseline": 0.6638334343608356,
+      "distributed": 0.6626504951844631
     },
     "Thailand": {
-      "intensive": 0.6865797638893127,
-      "baseline": 0.6863557696342468,
-      "distributed": 0.6787285804748535
+      "intensive": 0.801167259862406,
+      "baseline": 0.7212444586567862,
+      "distributed": 0.7190564542134422
     },
     "Vietnam": {
-      "intensive": 0.6950177550315857,
-      "baseline": 0.6947936415672302,
-      "distributed": 0.6911550760269165
+      "intensive": 0.6502467822884085,
+      "baseline": 0.6475148373723854,
+      "distributed": 0.6638325773143664
     },
     "Indonesia": {
-      "intensive": 0.6699293255805969,
-      "baseline": 0.6694438457489014,
-      "distributed": 0.6658986806869507
+      "intensive": 0.6607435961017762,
+      "baseline": 0.659230147847852,
+      "distributed": 0.5872789641519822
     },
     "Morocco": {
-      "intensive": 0.6423035860061646,
-      "baseline": 0.6414119005203247,
-      "distributed": 0.4993787109851837
+      "intensive": 0.6061418364113043,
+      "baseline": 0.6044393563417562,
+      "distributed": 0.6055088035067988
     },
     "Egypt": {
-      "intensive": 0.6689003109931946,
-      "baseline": 0.6686762571334839,
-      "distributed": 0.6691715717315674
+      "intensive": 0.657400906197285,
+      "baseline": 0.675808418140301,
+      "distributed": 0.6753774296059659
     },
     "Tunisia": {
-      "intensive": 0.7125077247619629,
-      "baseline": 0.5468602776527405,
-      "distributed": 0.5238247513771057
+      "intensive": 0.5690904961885563,
+      "baseline": 0.5685660330697649,
+      "distributed": 0.5914153755496472
     },
     "Israel": {
-      "intensive": 0.9791140556335449,
-      "baseline": 0.9454367160797119,
-      "distributed": 0.9458509087562561
+      "intensive": 0.8387537173074119,
+      "baseline": 0.8382013832478051,
+      "distributed": 0.8302494507716711
     },
     "Saudi Arabia": {
-      "intensive": 0.8348768353462219,
-      "baseline": 0.7675855755805969,
-      "distributed": 0.7661110162734985
+      "intensive": 0.8422328437042056,
+      "baseline": 0.8414556119254013,
+      "distributed": 0.7907214631272319
     },
     "United Arab Emirates": {
-      "intensive": 0.9033457636833191,
-      "baseline": 0.9032114148139954,
-      "distributed": 0.9032235145568848
+      "intensive": 0.9480001274372067,
+      "baseline": 0.9520073627656279,
+      "distributed": 0.9522799989481749
     }
   }
 }

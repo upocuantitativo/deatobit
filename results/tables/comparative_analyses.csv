@@ -5,13 +5,13 @@ DEA,SuperEff,Mean efficiency,0.8906476190531969,0/33 efficient,0.890647619053196
 DEA,SBM,Mean efficiency,0.6883983177027426,7/33 efficient,0.6883983177027426
 Censored regression,Tobit (right-censored at 1),Significant regressors (p<0.05),1.0,MLE,1.0
 Censored regression,Simar-Wilson bootstrap-truncated,Coefs with 95% CI excluding 0,3.0,B = 1000,3.0
-Machine learning (baseline),ElasticNet,R^2 LOO,0.0526581468034585,RMSE 0.1592,0.0526581468034585
-Machine learning (baseline),RandomForest,R^2 LOO,0.1054824221635942,RMSE 0.1547,0.1054824221635942
-Machine learning (baseline),GradientBoosting,R^2 LOO,0.078438894273414,RMSE 0.1571,0.078438894273414
-Machine learning (baseline),XGBoost,R^2 LOO,0.024757086671747,RMSE 0.1616,0.024757086671747
-Machine learning (baseline),LightGBM,R^2 LOO,-0.065556713492932,RMSE 0.1689,-0.065556713492932
-Machine learning (extended),ElasticNet,R^2 LOO,0.2524212902738258,RMSE 0.1473,0.2524212902738258
-Machine learning (extended),RandomForest,R^2 LOO,0.2348911511755772,RMSE 0.1490,0.2348911511755772
-Machine learning (extended),GradientBoosting,R^2 LOO,-0.0066547058649488,RMSE 0.1709,-0.0066547058649488
-Machine learning (extended),XGBoost,R^2 LOO,0.3231372112681284,RMSE 0.1402,0.3231372112681284
-Machine learning (extended),LightGBM,R^2 LOO,-0.0784023694311661,RMSE 0.1769,-0.0784023694311661
+Machine learning (baseline),ElasticNet,R^2 LOO,0.0637722609155218,RMSE 0.1645,0.0637722609155218
+Machine learning (baseline),RandomForest,R^2 LOO,0.1563911147325364,RMSE 0.1561,0.1563911147325364
+Machine learning (baseline),GradientBoosting,R^2 LOO,0.1185475337083605,RMSE 0.1596,0.1185475337083605
+Machine learning (baseline),XGBoost,R^2 LOO,0.093723260334154,RMSE 0.1618,0.093723260334154
+Machine learning (baseline),kNN,R^2 LOO,0.1502811107272234,RMSE 0.1567,0.1502811107272234
+Machine learning (extended),ElasticNet,R^2 LOO,-0.0114826698122023,RMSE 0.1710,-0.0114826698122023
+Machine learning (extended),RandomForest,R^2 LOO,0.2581959536570331,RMSE 0.1464,0.2581959536570331
+Machine learning (extended),GradientBoosting,R^2 LOO,0.2551565457943282,RMSE 0.1467,0.2551565457943282
+Machine learning (extended),XGBoost,R^2 LOO,0.2939835475057135,RMSE 0.1428,0.2939835475057135
+Machine learning (extended),kNN,R^2 LOO,0.4680722128076034,RMSE 0.1240,0.4680722128076034

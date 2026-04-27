@@ -117,7 +117,9 @@ def main() -> None:
     print("Scenario projections use the baseline RandomForest "
           "for interpretability of the four-variable perturbation.")
     model = fitted_base["RandomForest"]
-    feature_cols = list(model.named_steps["scaler"].feature_names_in_)
+    # Pipeline now starts with an imputer; the imputer keeps the column
+    # names from the original DataFrame.
+    feature_cols = list(model.named_steps["imputer"].feature_names_in_)
 
     sub = panel.dropna(subset=feature_cols + ["CCR"]).copy()
     base_X = sub[feature_cols].copy()
@@ -138,7 +140,7 @@ def main() -> None:
         title = {
             "baseline":    "Predicted CCR - baseline scenario (status quo)",
             "intensive":   "Predicted CCR - intensive demand scenario",
-            "distributed": "Predicted CCR - distributed demand scenario",
+            "distributed": "Predicted CCR - sustainable demand scenario",
         }[tag]
         fig = _choropleth(df_map, "predicted_efficiency", title,
                           cmin=0.4, cmax=1.05)

@@ -63,27 +63,30 @@ def _load_panel() -> pd.DataFrame:
 
 
 def _evaluate(df: pd.DataFrame, features: list[str], tag: str) -> None:
-    sub = df.dropna(subset=features + ["CCR"]).copy()
+    # We only require CCR to be present; missing regressors are imputed by
+    # the in-pipeline median imputer, which keeps the full sample.
+    sub = df.dropna(subset=["CCR"]).copy()
     X = sub[features]
     y = sub["CCR"]
     print(f"\n=== {tag.upper()} feature set ({len(features)} variables, "
           f"n = {len(sub)}) ===")
 
-    models = ml_models.build_models()
+    models = ml_models.build_models(columns=features)
     cv = ml_models.loo_cross_validate(models, X, y)
     cv.metrics.to_csv(TABLES / f"ml_loo_metrics_{tag}.csv")
     cv.predictions.to_csv(TABLES / f"ml_predictions_{tag}.csv")
     print("Leave-one-out metrics:")
     print(cv.metrics.round(4).to_string())
 
-    fitted = ml_models.fit_full(ml_models.build_models(), X, y)
+    fitted = ml_models.fit_full(ml_models.build_models(columns=features),
+                                X, y)
 
     perm = ml_models.permutation_table(fitted, X, y, n_repeats=50)
     perm["feature_set"] = tag
     perm.to_csv(TABLES / f"ml_permutation_importance_{tag}.csv", index=False)
 
     shap_rows = []
-    for name in ["RandomForest", "XGBoost", "LightGBM", "GradientBoosting"]:
+    for name in ["RandomForest", "XGBoost", "GradientBoosting"]:
         try:
             s = ml_models.shap_summary(fitted[name], X)
             s.insert(0, "model", name)
@@ -98,7 +101,8 @@ def _evaluate(df: pd.DataFrame, features: list[str], tag: str) -> None:
     joblib.dump(fitted, MODELS / f"ml_models_{tag}.pkl")
 
     # Stacked ensemble with a Ridge meta-learner.
-    stack = ml_models.stacked_ensemble(ml_models.build_models())
+    stack = ml_models.stacked_ensemble(
+        ml_models.build_models(columns=features))
     stack.fit(X, y)
     joblib.dump(stack, MODELS / f"ml_stack_{tag}.pkl")
     print(f"Stacked ensemble training R^2: {stack.score(X, y):.4f}")
