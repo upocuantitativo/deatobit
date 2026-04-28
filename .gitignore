@@ -15,3 +15,6 @@ results/models/*.pkl
 /Resultados_DEA_Tobit.docx
 /Datos_DEA_Tobit.xlsx
 /data/raw/Resultados_DEA_Tobit.docx
+
+# Local-only methodology and results write-ups
+/docs/text/

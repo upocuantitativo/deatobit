@@ -18,9 +18,9 @@
       <h1 data-en="European rural tourism efficiency"
           data-es="Eficiencia del turismo rural europeo">European rural tourism efficiency</h1>
       <p class="subtitle"
-         data-en="An explainable machine-learning pipeline for rural-tourism efficiency, with country-level interpretation and forward-looking scenario maps."
-         data-es="Una canalización de aprendizaje automático explicable para la eficiencia del turismo rural, con interpretación a nivel país y mapas predictivos para escenarios futuros.">
-        An explainable machine-learning pipeline for rural-tourism efficiency, with country-level interpretation and forward-looking scenario maps.
+         data-en="Reproducible framework that estimates rural-tourism efficiency through interpretable machine-learning, decomposes its country-level determinants and projects three forward-looking scenarios on choropleth maps."
+         data-es="Marco reproducible que estima la eficiencia del turismo rural mediante aprendizaje automático interpretable, descompone sus determinantes a nivel país y proyecta tres escenarios prospectivos sobre mapas coropléticos.">
+        Reproducible framework for explainable estimation of rural-tourism efficiency.
       </p>
     </div>
     <div class="lang-switch" role="group" aria-label="Language">
@@ -49,34 +49,18 @@
 <section id="methodology">
   <h2 data-en="Methodology" data-es="Metodología">Methodology</h2>
   <p class="lead"
-     data-en="In plain words: this diagram shows every step we go through, in order, from raw data to the maps and the country predictor at the end of the page."
-     data-es="En lenguaje sencillo: este diagrama muestra todos los pasos que seguimos, en orden, desde los datos brutos hasta los mapas y el predictor de países del final de la página.">
+     data-en="The diagram below summarises the ten sequential phases of the empirical strategy, organised by stage and connected by the data-flow between them. It allows the reader to navigate the report against a unified mental map."
+     data-es="El diagrama siguiente sintetiza las diez fases secuenciales de la estrategia empírica, organizadas por etapa y conectadas por el flujo de datos entre ellas. Permite recorrer el informe con un mapa mental unificado.">
   </p>
   <figure>
-    <img src="figures/methodology_graph.png"
+    <img class="zoomable" src="figures/methodology_graph.png"
          alt="Flowchart of the 10-phase methodology pipeline">
-    <figcaption data-en="Figure M1. Ten-phase pipeline that produces every artefact in this report. Each box is colour-coded by the stage it belongs to (Inputs, Estimation, Diagnostics, Projection, Outputs)."
-                data-es="Figura M1. Pipeline de diez fases que produce todos los artefactos del informe. Cada caja está coloreada por la etapa a la que pertenece (Inputs, Estimación, Diagnóstico, Proyección, Resultados).">
+    <figcaption data-en="Figure M1. Ten-phase pipeline that produces every artefact in this report. Each box is colour-coded by the stage it belongs to (Inputs, Estimation, Diagnostics, Projection, Outputs). Click to enlarge."
+                data-es="Figura M1. Pipeline de diez fases que produce todos los artefactos del informe. Cada caja está coloreada por la etapa a la que pertenece (Inputs, Estimación, Diagnóstico, Proyección, Resultados). Haga clic para ampliar.">
       Figure M1.
     </figcaption>
   </figure>
   <div class="download-row">
-    <a class="download-card" href="text/methodology.txt" download>
-      <span class="dl-tag" data-en="TXT" data-es="TXT">TXT</span>
-      <span class="dl-title" data-en="Full methodology" data-es="Metodología completa">Full methodology</span>
-      <span class="dl-sub" data-en="English · single paragraph · ~700 words"
-                           data-es="Inglés · un solo párrafo · ≈ 700 palabras">
-        English · single paragraph · ~700 words
-      </span>
-    </a>
-    <a class="download-card" href="text/results.txt" download>
-      <span class="dl-tag">TXT</span>
-      <span class="dl-title" data-en="Results analysis" data-es="Análisis de resultados">Results analysis</span>
-      <span class="dl-sub" data-en="English · single paragraph · ~750 words"
-                           data-es="Inglés · un solo párrafo · ≈ 750 palabras">
-        English · single paragraph · ~750 words
-      </span>
-    </a>
     <a class="download-card" href="figures/methodology_graph.svg" download>
       <span class="dl-tag">SVG</span>
       <span class="dl-title" data-en="Editable flowchart" data-es="Flowchart editable">Editable flowchart</span>
@@ -91,11 +75,11 @@
 <section id="data">
   <h2 data-en="Data" data-es="Datos">Data</h2>
   <p class="lead"
-     data-en="In plain words: we want to know which European countries make the most of their rural-tourism resources, and why. To do that we put together two tables — one with the basics about each country's tourist industry (beds, jobs, visitors), and a wider one with general information about the country (income, internet access, airports, heritage sites, etc.)."
-     data-es="En lenguaje sencillo: queremos saber qué países europeos sacan más partido a sus recursos de turismo rural, y por qué. Para ello reunimos dos tablas — una con los datos básicos del sector turístico de cada país (plazas, empleo, visitantes) y otra mucho más amplia con información general del país (renta, acceso a internet, aeropuertos, patrimonio, etc.).">
+     data-en="The empirical exercise relies on two complementary panels: a sectoral block that captures the productive structure of rural tourism in each country and a structural extension that profiles each country in terms of income, infrastructure, connectivity and heritage endowment."
+     data-es="El estudio empírico se apoya en dos paneles complementarios: un bloque sectorial que recoge la estructura productiva del turismo rural en cada país y una extensión estructural que perfila cada país en términos de renta, infraestructura, conectividad y dotación patrimonial.">
   </p>
-  <p data-en="The analysis combines two complementary panels: the original sectoral block (5 Eurostat variables and 4 sectoral regressors) and a structural extension with 23 country-level indicators retrieved from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
-     data-es="El análisis combina dos paneles complementarios: el bloque sectorial original (5 variables de Eurostat y 4 regresores sectoriales) y una extensión estructural con 23 indicadores a nivel país obtenidos del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.">
+  <p data-en="The sectoral block combines five Eurostat variables (three productive inputs and two demand-side outputs) with four classic regressors of the censored second-stage literature. The structural extension supplements it with 23 country-level indicators sourced from the World Bank API, the UNESCO World Heritage list and the CIA World Factbook."
+     data-es="El bloque sectorial combina cinco variables de Eurostat (tres inputs productivos y dos outputs de demanda) con cuatro regresores clásicos de la literatura censurada de segunda etapa. La extensión estructural la complementa con 23 indicadores a nivel país obtenidos del API del Banco Mundial, la lista del Patrimonio Mundial UNESCO y el CIA World Factbook.">
     Two panels: the original Eurostat sectoral block and a 23-indicator structural extension.
   </p>
 
@@ -174,12 +158,12 @@
 <section id="ml">
   <h2 data-en="Machine learning" data-es="Aprendizaje automático">Machine learning</h2>
   <p class="lead"
-     data-en="In plain words: we ask several artificial-intelligence programs to learn the relationship between a country's profile and its rural-tourism efficiency, and we score how well each one would predict a country it has never seen."
-     data-es="En lenguaje sencillo: pedimos a varios programas de inteligencia artificial que aprendan la relación entre el perfil de un país y su eficiencia en turismo rural, y medimos lo bien que cada uno predeciría un país que nunca ha visto.">
+     data-en="Five supervised learners are trained on the same target — the CCR efficiency score — and benchmarked under leave-one-out cross-validation, the only out-of-sample protocol consistent with a panel of 33 countries."
+     data-es="Cinco algoritmos supervisados se entrenan sobre el mismo objetivo —la puntuación de eficiencia CCR— y se evalúan mediante validación leave-one-out, el único protocolo fuera de muestra coherente con un panel de 33 países.">
   </p>
-  <p data-en="Five learners plus a stacked ensemble are trained on the same target (CCR-style efficiency) and evaluated under leave-one-out cross-validation, the only sensible scheme given the small sample. Two feature sets are compared: the four-variable baseline and the extended panel with 23 structural indicators."
-     data-es="Cinco algoritmos y un ensemble apilado se entrenan sobre la misma variable objetivo (eficiencia tipo CCR) y se evalúan con validación leave-one-out, la única razonable dada la muestra pequeña. Se comparan dos conjuntos: el baseline de cuatro variables y la extensión con 23 indicadores estructurales.">
-    Five learners + Ridge-stacked ensemble · leave-one-out CV.
+  <p data-en="Two feature sets are systematically compared: a four-variable sectoral baseline that mirrors the original Tobit specification and a 23-indicator structural extension that incorporates macroeconomic, infrastructural and territorial regressors."
+     data-es="Se comparan sistemáticamente dos conjuntos de variables: un baseline sectorial de cuatro variables que reproduce la especificación Tobit original y una extensión estructural de 23 indicadores que incorpora regresores macroeconómicos, infraestructurales y territoriales.">
+    Baseline (4 variables) vs structural extension (23 indicators).
   </p>
   <ul class="model-list">
     <li><b>Elastic Net</b> · <span data-en="linear baseline with L1+L2 penalty" data-es="baseline lineal con penalización L1+L2">linear baseline</span></li>
@@ -204,14 +188,9 @@
 <section id="explain">
   <h2 data-en="Explainability" data-es="Explicabilidad">Explainability</h2>
   <p class="lead"
-     data-en="In plain words: even when an AI predicts well, we want to know why. This section opens the model and shows which country features push the prediction up or down — globally, on average, and country by country."
-     data-es="En lenguaje sencillo: aunque la IA prediga bien, nos importa saber por qué. Esta sección abre el modelo y muestra qué características de cada país tiran la predicción hacia arriba o hacia abajo — a nivel global, en promedio y país por país.">
+     data-en="Predictive accuracy is necessary but insufficient: model interpretability allows policy-makers and academics to identify the country attributes that drive efficiency. Three complementary lenses — permutation importance, SHAP values and partial-dependence — are reported below."
+     data-es="La precisión predictiva es condición necesaria pero no suficiente: la interpretabilidad permite a investigadores y formuladores de políticas identificar los atributos que impulsan la eficiencia. A continuación se reportan tres lentes complementarias: importancia por permutación, valores SHAP y dependencia parcial.">
   </p>
-  <p data-en="The pipeline never stops at predictions; it explains them through three complementary lenses."
-     data-es="La canalización no se queda en las predicciones; las explica con tres lentes complementarias.">
-    Three complementary explainability lenses.
-  </p>
-
   <h3 data-en="Global feature importance" data-es="Importancia global de variables">Global feature importance</h3>
   <div class="figrow">
     <figure>
@@ -256,12 +235,8 @@
 <section id="comparison">
   <h2 data-en="Comparative scoreboard" data-es="Cuadro comparativo">Comparative scoreboard</h2>
   <p class="lead"
-     data-en="In plain words: a single side-by-side table where each method gets one comparable score, so you can see at a glance which one performs best and pick a winner."
-     data-es="En lenguaje sencillo: una tabla única que pone todos los métodos en una sola escala, para que se vea de un vistazo cuál funciona mejor y poder elegir un ganador.">
-  </p>
-  <p data-en="Every estimator is reported in a single table with a comparable performance metric. The best model — selected as the ML estimator with the highest leave-one-out R² on the extended panel — drives the scenario projections that follow."
-     data-es="Cada estimador se reporta en una única tabla con una métrica de desempeño comparable. El mejor modelo —seleccionado como el estimador IA con mayor R² leave-one-out en el panel ampliado— alimenta las proyecciones de escenarios que siguen.">
-    Single comparative table; the best ML estimator drives the scenario projections.
+     data-en="Every estimator is reported on a unified metric so that direct comparison is possible across methodological families. The selected best estimator is then carried forward to the scenario projection and the out-of-sample country predictor."
+     data-es="Todos los estimadores se reportan en una métrica unificada que permite la comparación directa entre familias metodológicas. El estimador ganador se traslada después a la proyección de escenarios y al predictor de países fuera de muestra.">
   </p>
   <div id="comparison-table-host">
     <p class="muted" data-en="Loading scoreboard…" data-es="Cargando cuadro comparativo…">Loading scoreboard…</p>
@@ -276,14 +251,9 @@
 <section id="maps">
   <h2 data-en="Maps and future scenarios" data-es="Mapas y escenarios futuros">Maps and future scenarios</h2>
   <p class="lead"
-     data-en="In plain words: we paint Europe according to today's efficiency, and then ask the model what would happen if rural tourism behaved differently in the future — under three plausible scenarios."
-     data-es="En lenguaje sencillo: pintamos Europa según la eficiencia actual y después preguntamos al modelo qué pasaría si el turismo rural se comportase de otra forma en el futuro — bajo tres escenarios plausibles.">
+     data-en="The empirical density of efficiency across the European panel is rendered as a choropleth, complemented by three counter-factual projections obtained by perturbing the four sectoral regressors symmetrically around their observed values."
+     data-es="La densidad empírica de la eficiencia en el panel europeo se representa mediante un mapa coroplético, complementado con tres proyecciones contrafactuales obtenidas al perturbar simétricamente los cuatro regresores sectoriales en torno a sus valores observados.">
   </p>
-  <p data-en="The first map shows the empirical density of CCR efficiency across the 33 European countries. The next three are forward-looking projections produced by the best ML estimator under different perturbations of the four sectoral regressors."
-     data-es="El primer mapa muestra la densidad empírica de la eficiencia CCR entre los 33 países europeos. Los tres siguientes son proyecciones a futuro generadas por el mejor estimador IA bajo distintas perturbaciones de los cuatro regresores sectoriales.">
-    Density map + three counter-factual scenarios.
-  </p>
-
   <table class="grid">
     <thead><tr>
       <th data-en="Scenario" data-es="Escenario">Scenario</th>
@@ -335,14 +305,9 @@
 <section id="predictor">
   <h2 data-en="Country predictor (out-of-sample)" data-es="Predictor de país (fuera de muestra)">Country predictor (out-of-sample)</h2>
   <p class="lead"
-     data-en="In plain words: pick a country that is NOT in our European panel and a future scenario; the page tells you what the AI thinks its rural-tourism efficiency would be."
-     data-es="En lenguaje sencillo: elige un país que NO esté en nuestro panel europeo y un escenario futuro; la página te dice cuál sería su eficiencia en turismo rural según la IA.">
+     data-en="The trained estimator is applied to a separate panel of 31 countries that lie outside the European study: select a country and a scenario to obtain its predicted CCR efficiency together with a contextual ranking and a per-scenario bar chart."
+     data-es="El estimador entrenado se aplica a un panel adicional de 31 países que quedan fuera del estudio europeo: seleccione un país y un escenario para obtener su eficiencia CCR predicha junto con un ranking contextual y un gráfico por escenario.">
   </p>
-  <p data-en="Pick a country that is NOT in the European study panel and a future scenario. The trained ML pipeline produces a predicted rural-tourism efficiency together with a graphical breakdown."
-     data-es="Selecciona un país que NO esté en el panel europeo del estudio y un escenario futuro. La canalización IA entrenada produce una eficiencia predicha junto con un resumen gráfico.">
-    Country dropdown + scenario selector → predicted efficiency + graphic.
-  </p>
-
   <div class="scenario-legend">
     <div class="scen-card scen-int">
       <h4 data-en="Intensive demand" data-es="Demanda intensiva">Intensive demand</h4>
@@ -397,12 +362,8 @@
 <section id="repro">
   <h2 data-en="Reproducibility" data-es="Reproducibilidad">Reproducibility</h2>
   <p class="lead"
-     data-en="In plain words: every figure, table and prediction on this page can be recreated from scratch in under ten minutes by running the scripts below in order."
-     data-es="En lenguaje sencillo: cualquier figura, tabla o predicción de esta página se puede reproducir desde cero en menos de diez minutos ejecutando los scripts de abajo en orden.">
-  </p>
-  <p data-en="The full pipeline runs from a clean clone in under ten minutes:"
-     data-es="La canalización completa se ejecuta desde un clon limpio en menos de diez minutos:">
-    Full pipeline from a clean clone:
+     data-en="Every figure, table and prediction in this report is regenerated end-to-end by the ten numbered scripts below. The full pipeline runs from a clean clone in under ten minutes."
+     data-es="Todas las figuras, tablas y predicciones del informe se regeneran de extremo a extremo mediante los diez scripts numerados que siguen. La canalización completa se ejecuta desde un clon limpio en menos de diez minutos.">
   </p>
 <pre><code>pip install -r requirements.txt
 
@@ -416,6 +377,12 @@ python scripts/07_make_maps.py           # choropleth maps
 python scripts/08_predict_non_study.py   # external-country JSON
 python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
 </section>
+
+<div id="lightbox" class="lightbox" hidden>
+  <button id="lightbox-close" class="lightbox-close" type="button" aria-label="Close">×</button>
+  <img id="lightbox-img" src="" alt="">
+  <p id="lightbox-caption" class="lightbox-caption"></p>
+</div>
 
 <footer>
   <div class="wrap">
@@ -461,6 +428,34 @@ python scripts/09_make_comparison.py     # comparative scoreboard</code></pre>
 
   document.getElementById('btn-en').addEventListener('click', () => applyLang('en'));
   document.getElementById('btn-es').addEventListener('click', () => applyLang('es'));
+
+  // ---- Lightbox: enlarge any figure image on click ----
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  function openLightbox(img) {
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || '';
+    const cap = img.closest('figure')?.querySelector('figcaption');
+    lightboxCaption.textContent = cap ? cap.textContent.trim() : (img.alt || '');
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.hidden = true;
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('figure img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
+  lightbox.addEventListener('click', (ev) => {
+    if (ev.target === lightbox || ev.target === lightboxImg) closeLightbox();
+  });
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && !lightbox.hidden) closeLightbox();
+  });
 
   // ---- Comparison table ----
   let comparison = null;
