@@ -1,0 +1,3 @@
+/* Correcciones de legibilidad (impeccable detect), 2026-11-24. Solo color y tamaño de letra.
+   Para deshacerlas: quitar el <link> a este fichero en el HTML. */
+span.dl-tag { font-size: 12px !important; }
